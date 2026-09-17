@@ -2,7 +2,7 @@
 
 >Levando a leitura da literatura brasileira para dentro das escolas públicas.
 
-![Menu da Biblioteca](.images/menu.png)
+![Menu da Biblioteca](.menu/images/menu.png)
 
 ## Índice
 - [Sobre o projeto](#sobre-o-projeto)
@@ -98,8 +98,8 @@ Entre as funcionalidades planejadas estão:
 
 ## Screenshots
 
-![Login da Biblioteca](.images/login.png)
-![ADM da Biblioteca](.images/adm.jpeg)
+![Login da Biblioteca](.menu/images/login.png)
+![ADM da Biblioteca](.menu/images/adm.jpeg)
 
 
 ## Como usar

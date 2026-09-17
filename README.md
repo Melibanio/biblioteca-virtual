@@ -2,7 +2,7 @@
 
 >Levando a leitura da literatura brasileira para dentro das escolas públicas.
 
-![Menu](.menu/images/menu.png)
+![Banner](menu/images/banner%20(2).png)
 
 ## Índice
 - [Sobre o projeto](#sobre-o-projeto)
@@ -98,8 +98,8 @@ Entre as funcionalidades planejadas estão:
 
 ## Screenshots
 
-![Login](.menu/images/login.png)
-![ADM](.menu/images/adm.jpeg)
+![ADM](menu/images/adm.jpeg)
+![Login](menu/images/login.png)
 
 
 ## Como usar
@@ -129,7 +129,7 @@ O repositório possui os materiais utilizados para representar a estrutura e o r
 
 ### Modelo de relacionamento
 
-![Modelo de Relacionamento](.menu/images/modelo_de_relacionamneto.png)
+![Modelo de Relacionamento](menu/images/modelo_de_relacionamneto.png)
 
 O arquivo editável do modelo de relacionamento também está disponível no projeto:
 

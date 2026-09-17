@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header class="cabecalho">
+
+        <div class="logo">
+            <h1>Biblioteca Virtual</h1>
+        </div>
+
+        <nav>
+            <a href="#">Menu</a>
+            <a href="#">Sobre</a>
+            <a href="#">Contato</a>
+        </nav>
+
+    </header>
+
+    <section class="faixa">
+        <h1>Bibliotecas <span>Virtual</span></h1>
+
+        <p>
+            Acesse livros gratuitos e amplie seus conhecimentos em um só lugar.
+        </p>
+
+    </section>
+
+
+
+    <main class="pagina">
+
+        <section class="area-formulario">
+
+            <div class="abaLogin">
+
+                <h2>Entrar na sua conta</h2>
+
+                <p class="descricao">
+                    Use seu e-mail estudandil
+                </p>
+
+                <form>
+                    <div class="campo">
+                        <label for="emailLogin">Endereço de E-mail</label>
+
+                        <input type="email" id="emailLogin" placeholder="Digite seu e-mail">
+                    </div>
+
+
+                    <div class="campo">
+                        <label for="senhaLogin">Senha</label>
+
+                        <input type="password" id="senhaLogin" placeholder="Digite sua senha">
+                    </div>
+
+
+                    <p class="esqueci"><u>Esqueceu sua senha?</u></p>
+
+                    <button type="submit">Entrar</button>
+
+                </form>
+            </div>
+
+            <div class="abaCriar">
+
+                <h2>Faça seu cadastro</h2>
+
+                <form>
+
+                    <div class="campo">
+                        <label for="nomeCadastro">Nome completo</label>
+
+                        <input type="text" id="nomeCadastro" placeholder="Digite seu nome">
+                    </div>
+
+                    <div class="campo">
+                        <label for="emailCadastro">E-mail estudantil</label>
+                        <input type="email" id="emailCadastro" placeholder="Digite seu e-mail">
+                    </div>
+
+                    <div class="campo">
+                        <label for="senhaCadastro">Senha</label>
+                        <input type="password" id="senhaCadastro" placeholder="Crie uma senha">
+                    </div>
+                    
+                    <hr>
+
+                    <div class="tipo">
+
+
+
+                        <p class="titulo-portal">
+                            Selecione seu portal
+                        </p>
+
+                        <div class="opcoes-portal">
+
+
+                            <label class="opcao-portal">
+                                <input type="radio" name="tipoUsuario" value="aluno">
+                                <span>Portal do Aluno</span>
+                            </label>
+
+                            <label class="opcao-portal">
+                                <input type="radio" name="tipoUsuario" value="professor">
+                                <span>Portal do Professor</span>
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <button type="submit">Cadastrar</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <span>© 2026 Biblioteca Virtual</span>
+        <span class="separador"> | </span>
+        <a href="#">Sobre o projeto</a>
+        <span class="separador"> | </span>
+        <a href="#">Contato</a>
+    </footer>
+</body>
+
+</html>

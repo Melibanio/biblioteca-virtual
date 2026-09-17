@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca Virtual</title>
+
+    <!-- fontes usadas no site -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Work+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- meu arquivo de estilo -->
+    <link rel="stylesheet" href="estilo.css">
+</head>
+
+<body>
+
+    <!-- ========== CABECALHO ========== -->
+    <header>
+        <div class="header-inner">
+
+            <div class="logo">Biblioteca Virtual</div>
+
+            <!-- este botao so leva para a pagina de login do administrador -->
+            <a class="botao-adm" href="../adm/painel.html">Área do administrador</a>
+
+        </div>
+    </header>
+
+    <!-- ========== TOPO / BUSCA ========== -->
+    <section class="hero">
+        <div class="hero-inner">
+
+            <h1>Literatura brasileira, aberta a qualquer hora.</h1>
+
+            <p class="sub">
+                Um acervo digital pensado para estudantes de escolas públicas encontrarem,
+                lerem e acompanharem os clássicos e os novos nomes das nossas letras.
+            </p>
+
+            <div class="search-shell">
+                <input id="search-input" type="text" placeholder="Buscar por título ou autor...">
+                <button id="search-btn" type="button">Buscar</button>
+            </div>
+
+        </div>
+    </section>
+    <div class="corpo">
+
+        <!-- ========== MENU LATERAL ========== -->
+        <aside class="lateral">
+
+            <nav class="lateral-nav">
+                <a href="#catalogo">Catálogo</a>
+                <a href="#sobre">Sobre</a>
+            </nav>
+
+            <div class="lateral-generos">
+                <span class="lateral-titulo">Gêneros</span>
+
+                <div id="genre-strip">
+                    <!-- os botoes de genero sao criados pelo JavaScript -->
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- ========== CATALOGO ========== -->
+        <main class="catalog" id="catalogo">
+
+            <div class="catalog-head">
+                <h2>Catálogo</h2>
+                <span id="result-count"></span>
+            </div>
+
+            <div class="grid" id="grid">
+                <!-- os livros sao criados pelo JavaScript -->
+            </div>
+
+        </main>
+
+    </div>
+
+    <!-- ========== SOBRE ========== -->
+    <section class="sobre" id="sobre">
+        <div class="sobre-inner">
+            <h2>Sobre o projeto</h2>
+            <p>
+                A Biblioteca Virtual é um projeto acadêmico do curso de Análise e Desenvolvimento
+                de Sistemas. Nesta primeira versão os dados ficam salvos no próprio navegador.
+                O cadastro dos livros é feito pelo administrador, em uma página separada e
+                protegida por login.
+            </p>
+        </div>
+    </section>
+
+    <!-- ========== JANELA DA SINOPSE ========== -->
+    <div class="modal" id="modal-sinopse">
+        <div class="modal-caixa">
+
+            <button class="modal-fechar" id="fechar-sinopse" type="button">Fechar</button>
+
+            <h3 id="sinopse-titulo"></h3>
+            <p class="modal-autor" id="sinopse-autor"></p>
+            <p class="modal-texto" id="sinopse-texto"></p>
+
+        </div>
+    </div>
+
+    <footer>Projeto acadêmico — Biblioteca Virtual · versão inicial</footer>
+
+    <!-- meu arquivo de JavaScript -->
+    <script src="funcionalidade.js"></script>
+
+</body>
+
+</html>

@@ -15,12 +15,14 @@
 }
 
 body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
     font-family: Arial, Helvetica, sans-serif;
 
     background-image: url(https://i.pinimg.com/736x/df/6a/c6/df6ac6d36ff15097bc801da2eb936aaa.jpg);
     background-position: center;
     background-attachment: fixed;
-    min-height: 100vh;
 }
 
 .cabecalho {

@@ -125,11 +125,11 @@ O repositório possui os materiais utilizados para representar a estrutura e o r
 
 ### Diagrama da biblioteca
 
-![Diagrama da Biblioteca](.images/biblioteca-diagrama.png)
+![Diagrama](./menu/images/biblioteca-diagrama.png)
 
 ### Modelo de relacionamento
 
-![Modelo de Relacionamento](.images/modelo_de_relacionamneto.png)
+![Modelo de Relacionamento](.menu/images/modelo_de_relacionamneto.png)
 
 O arquivo editável do modelo de relacionamento também está disponível no projeto:
 

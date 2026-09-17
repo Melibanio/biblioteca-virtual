@@ -2,7 +2,7 @@
 
 >Levando a leitura da literatura brasileira para dentro das escolas públicas.
 
-![Banner](menu/images/banner%20(2).png)
+![Banner](menu/images/menu.png)
 
 ## Índice
 - [Sobre o projeto](#sobre-o-projeto)

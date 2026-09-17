@@ -129,7 +129,7 @@ O repositório possui os materiais utilizados para representar a estrutura e o r
 
 ### Modelo de relacionamento
 
-![Modelo de Relacionamento](.menu/images/modelo-de-relacionamneto.png)
+![Modelo de Relacionamento](.menu/images/modelo_de_relacionamneto.png)
 
 O arquivo editável do modelo de relacionamento também está disponível no projeto:
 

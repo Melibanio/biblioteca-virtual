@@ -22,7 +22,5 @@
 - JPA para relacionar a classe Usuario com a tabela do banco.
 - H2 como banco de dados.
 
-## Atenção sobre senhas
-Para manter este exemplo didático mais simples, a senha está sendo salva diretamente no banco, sem criptografia. Isso serve apenas para demonstração local em atividade acadêmica. Em um sistema real, senhas devem ser armazenadas com hash seguro, como BCrypt, e a recuperação de senha deve usar uma confirmação segura por e-mail.
 
 O banco desta versão usa o arquivo `dados/biblioteca-simples`, separado do banco da versão anterior.

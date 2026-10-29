@@ -125,24 +125,29 @@ var botaoFechar = document.getElementById("fechar-sinopse");
 /* =========================================================
 LER OS DADOS SALVOS NO NAVEGADOR
 ======================================================== */
+/* =========================================================
+CARREGAR LIVROS DO BANCO H2 PELA SERVLET JAVA
+Quando a aplicação está rodando no Tomcat, a fonte principal é a API /livros.
+O armazenamento local fica como alternativa para abrir o HTML isoladamente.
+========================================================= */
 function carregarLivros() {
-    var salvos = localStorage.getItem(CHAVE);
-
-    if (salvos === null) {
-        // primeira vez que o site abre: usa a lista inicial
-        livros = livrosIniciais;
-        localStorage.setItem(CHAVE, JSON.stringify(livros));
-    } else {
-        livros = JSON.parse(salvos);
-    }
-
-    var capas = localStorage.getItem(CHAVE_CAPAS);
-
-    if (capas === null) {
-        capasSalvas = {};
-    } else {
-        capasSalvas = JSON.parse(capas);
-    }
+    return fetch("../livros")
+        .then(function (resposta) {
+            if (!resposta.ok) throw new Error("API indisponível");
+            return resposta.json();
+        })
+        .then(function (dados) {
+            livros = dados;
+        })
+        .catch(function () {
+            // Alternativa para visualizar o protótipo sem iniciar o servidor Java.
+            var salvos = localStorage.getItem(CHAVE);
+            livros = salvos === null ? livrosIniciais : JSON.parse(salvos);
+        })
+        .then(function () {
+            var capas = localStorage.getItem(CHAVE_CAPAS);
+            capasSalvas = capas === null ? {} : JSON.parse(capas);
+        });
 }
 
 function salvarCapas() {
@@ -398,9 +403,10 @@ botaoBusca.addEventListener("click", function () {
     mostrarLivros();
 });
 
-carregarLivros();
-for (var n = 0; n < livros.length; n++) {
-    procurarCapa(livros[n]);
-}
-
-mostrarLivros();
+/* A lista do catálogo só é montada depois que a resposta da API chega. */
+carregarLivros().then(function () {
+    for (var n = 0; n < livros.length; n++) {
+        procurarCapa(livros[n]);
+    }
+    mostrarLivros();
+});

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel administrativo | Biblioteca Virtual</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="painel.css">
+</head>
+<body>
+    <header class="topo">
+        <div class="topo-conteudo">
+            <div class="marca">Biblioteca <span>Virtual</span><small>PAINEL DO ADMINISTRADOR</small></div>
+            <nav><a href="biblioteca.html">Ver catálogo</a><a href="../menu/index.html">Página inicial</a></nav>
+        </div>
+    </header>
+
+    <main class="conteudo">
+        <section class="introducao">
+            <span class="etiqueta">ÁREA ADMINISTRATIVA</span>
+            <h1>Gerenciamento do acervo</h1>
+            <p>Cadastre, consulte, edite e exclua livros. As alterações são gravadas no banco H2 por meio de Servlets Java.</p>
+        </section>
+
+        <div id="aviso" class="aviso" role="status" aria-live="polite"></div>
+
+        <section class="painel-formulario">
+            <div class="titulo-secao"><div><span class="etiqueta">CADASTRO</span><h2 id="titulo-formulario">Adicionar livro</h2></div><span class="selo">CRUD • H2</span></div>
+            <form id="form-livro">
+                <input type="hidden" id="id" name="id">
+                <div class="campos">
+                    <div class="campo campo-largo"><label for="titulo">Título do livro *</label><input id="titulo" name="titulo" maxlength="200" required placeholder="Ex.: Dom Casmurro"></div>
+                    <div class="campo"><label for="autor">Autor *</label><input id="autor" name="autor" maxlength="160" required placeholder="Nome do autor"></div>
+                    <div class="campo"><label for="genero">Gênero *</label><input id="genero" name="genero" maxlength="80" required placeholder="Ex.: Romance"></div>
+                    <div class="campo campo-largo"><label for="capa">URL da capa (opcional)</label><input id="capa" name="capa" type="url" maxlength="1000" placeholder="https://..."></div>
+                    <div class="campo campo-largo"><label for="sinopse">Sinopse</label><textarea id="sinopse" name="sinopse" rows="4" placeholder="Resumo do livro"></textarea></div>
+                </div>
+                <div class="acoes-formulario"><button class="botao primario" id="salvar" type="submit">Cadastrar livro</button><button class="botao secundario" id="cancelar" type="button" hidden>Cancelar edição</button></div>
+                <p class="nota">* Campos obrigatórios. A capa pode ficar vazia e ser adicionada depois.</p>
+            </form>
+        </section>
+
+        <section class="painel-lista">
+            <div class="titulo-secao"><div><span class="etiqueta">ACERVO</span><h2>Livros cadastrados</h2></div><span id="total-livros" class="contador">Carregando...</span></div>
+            <div class="filtro"><label for="filtro-livros">Pesquisar no acervo</label><input id="filtro-livros" type="search" placeholder="Digite título, autor ou gênero"></div>
+            <div class="tabela-responsiva">
+                <table>
+                    <thead><tr><th>ID</th><th>Livro</th><th>Autor</th><th>Gênero</th><th>Ações</th></tr></thead>
+                    <tbody id="lista-livros"><tr><td colspan="5" class="vazio">Carregando acervo...</td></tr></tbody>
+                </table>
+            </div>
+            <p class="nota">Os livros iniciais são inseridos automaticamente no primeiro início da aplicação. Depois, os dados ficam persistidos no H2.</p>
+        </section>
+    </main>
+    <footer>Biblioteca Virtual · Painel administrativo</footer>
+    <script src="painel.js"></script>
+</body>
+</html>

@@ -22,5 +22,3 @@
 - JPA para relacionar a classe Usuario com a tabela do banco.
 - H2 como banco de dados.
 
-
-O banco desta versão usa o arquivo `dados/biblioteca-simples`, separado do banco da versão anterior.

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro | Biblioteca Virtual</title>
+    <link rel="stylesheet" th:href="@{/Login-cadastro-esqueciSenha.css}">
+</head>
+<body>
+    <header class="cabecalho">
+        <div class="logo">
+            <h1>Biblioteca <span>Virtual</span></h1>
+            <p>Acesse livros gratuitos e amplie seus conhecimentos em um só lugar.</p>
+        </div>
+        <nav>
+            <a href="#">Menu</a>
+            <a href="#">Sobre</a>
+            <a href="#">Contato</a>
+        </nav>
+    </header>
+
+    <main class="pagina">
+        <section class="area-formulario">
+            <div class="abaCriar">
+                <h2>Crie sua conta</h2>
+                <p class="descricao">Preencha seus dados para começar a explorar a Biblioteca Virtual.
+                </p>
+                <p class="mensagem erro" th:if="${erro}" th:text="${erro}"></p>
+                <form th:action="@{/usuarios/cadastrar}" method="post" id="formCadastro">
+                    <div class="campo">
+                        <label for="nomeCadastro">Nome completo</label>
+                        <input type="text" id="nomeCadastro" name="nome" placeholder="Digite seu nome completo" autocomplete="name" required>
+                    </div>
+                    <div class="campo">
+                        <label for="emailCadastro">E-mail</label>
+                        <input type="email" id="emailCadastro" name="email" placeholder="exemplo@email.com" autocomplete="email" required>
+                    </div>
+                    <div class="campo">
+                        <label for="telefoneCadastro">Telefone (opcional)</label>
+                        <input type="tel" id="telefoneCadastro" name="telefone" placeholder="(11) 99999-9999" autocomplete="tel">
+                    </div>
+                    <div class="campo">
+                        <label for="nascimentoCadastro">Data de nascimento</label>
+                        <input type="date" id="nascimentoCadastro" name="nascimento" autocomplete="bday" required>
+                    </div>
+                    <div class="campo">
+                        <label for="tipoUsuario">Como você pretende usar a biblioteca?</label>
+                        <select id="tipoUsuario" name="tipoUsuario" required>
+                            <option value="">Selecione uma opção</option>
+                            <option value="estudante">Estudante</option>
+                            <option value="professor">Professor(a)</option>
+                        </select>
+                    </div>
+                    <div class="campo">
+                        <label for="senhaCadastro">Crie uma senha</label>
+                        <input type="password" id="senhaCadastro" name="senha" placeholder="Mínimo de 8 caracteres" minlength="8" autocomplete="new-password" required>
+                    </div>
+                    <div class="campo">
+                        <label for="confirmarSenha">Confirmar senha</label>
+                        <input type="password" id="confirmarSenha" name="confirmarSenha" placeholder="Digite a senha novamente" minlength="8" autocomplete="new-password" required>
+                    </div>
+                    <hr class="linha-cadastro">
+                    <button type="submit">Criar minha conta</button>
+                </form>
+                <p class="voltar-login">Já tem uma conta? <a th:href="@{/login}">Entrar</a></p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <span>© 2026 Biblioteca Virtual</span>
+        <span class="separador"> | </span>
+        <a href="#">Sobre o projeto</a>
+        <span class="separador"> | </span>
+        <a href="#">Contato</a>
+    </footer>
+</body>
+
+</html>

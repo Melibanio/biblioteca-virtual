@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Biblioteca Virtual</title>
+    <link rel="stylesheet" th:href="@{/Login-cadastro-esqueciSenha.css}">
+</head>
+<body>
+    <header class="cabecalho">
+        <div class="logo">
+            <h1>Biblioteca <span>Virtual</span></h1>
+            <p>Acesse livros gratuitos e amplie seus conhecimentos em um só lugar.</p>
+        </div>
+        <nav>
+            <a href="#">Menu</a>
+            <a href="#">Sobre</a>
+            <a href="#">Contato</a>
+        </nav>
+    </header>
+
+    <main class="pagina">
+        <section class="area-formulario">
+            <div class="abaLogin">
+                <h2>Entrar na sua conta</h2>
+                <p class="descricao">
+                    Use seu e-mail cadastrado para acessar sua conta.
+                </p>
+                <p class="mensagem erro" th:if="${erro}" th:text="${erro}"></p>
+                <p class="mensagem sucesso" th:if="${sucesso}" th:text="${sucesso}"></p>
+                <form th:action="@{/usuarios/entrar}" method="post">
+                     <div class="campo">
+                        <label for="emailLogin">Endereço de e-mail</label>
+                        <input type="email" id="emailLogin" name="email" placeholder="Digite seu e-mail" autocomplete="email" required>
+                    </div>
+                    <div class="campo">
+                        <label for="senhaLogin">Senha</label>
+                        <input type="password" id="senhaLogin" name="senha" placeholder="Digite sua senha" autocomplete="current-password" required>
+                    </div>
+                    <p class="esqueci"><a th:href="@{/esqueci-senha}">Esqueceu sua senha?</a></p>
+                    <button type="submit">Entrar</button>
+                </form>
+                <p class="convite-cadastro">Ainda não tem cadastro?</p>
+                <a class="botao-link" th:href="@{/cadastro}">Criar uma conta</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <span>© 2026 Biblioteca Virtual</span>
+        <span class="separador"> | </span>
+        <a href="#">Sobre o projeto</a>
+        <span class="separador"> | </span>
+        <a href="#">Contato</a>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,256 @@
+/* . Estrutura da página */
+:root {
+    --nuvem: #a7dfff;
+    --noite: #023fb4;
+    --madrugada: #001635;
+    --grama: #2c5a3e;
+    --capim: #d7ff55;
+    --estrelada: #e9cc0a;
+    --cinza: #929AA1;
+    --branco: #ffffff;
+    --borda: #d6e0e8;
+    --texto-secundario: #596875;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--azul-escuro);
+    background: var(--branco);
+}
+
+/* Cabeçalho e navegação */
+.cabecalho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 22px 5%;
+    color: var(--branco);
+    background: var(--madrugada);
+}
+
+.cabecalho h1 {
+    font-size: 1.7rem;
+}
+
+.cabecalho h1 span {
+    color: var(--capim);
+}
+
+.cabecalho nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+}
+
+.cabecalho nav a {
+    color: var(--nuvem);
+    font-size: 1.05rem;
+    text-decoration: none;
+}
+
+.cabecalho nav a:hover {
+    color: var(--capim);
+}
+
+/* Conteúdo principal */
+.container {
+    width: 90%;
+    max-width: 850px;
+    flex: 1;
+    margin: 40px auto;
+}
+
+.titulo-pagina {
+    margin-bottom: 25px;
+}
+
+.titulo-pagina h2 {
+    margin-bottom: 8px;
+    font-size: 2rem;
+}
+
+.titulo-pagina p {
+    color: var(--texto-secundario);
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.dados-perfil {
+    padding: 30px;
+    background: var(--branco);
+    border: 1px solid var(--borda);
+    border-radius: 12px;
+    box-shadow: 0 5px 18px rgba(0, 22, 53, 0.06);
+}
+
+/* Foto e resumo do usuário */
+.imagem {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding-bottom: 25px;
+}
+
+.foto {
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    overflow: hidden;
+    background: #eef6fb;
+    border: 2px dashed #9bb9ca;
+    border-radius: 50%;
+    text-align: center;
+}
+
+.texto-foto {
+    padding: 0 8px;
+    color: var(--noite);
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.foto input[type="file"] {
+    width: 82px;
+    font-size: 0.6rem;
+}
+
+.dados-usuario h3 {
+    margin-bottom: 6px;
+    font-size: 1.3rem;
+}
+
+.dados-usuario p {
+    color: var(--texto-secundario);
+    font-size: 0.95rem;
+}
+
+/* Informações pessoais */
+.dados-perfil hr {
+    border: 0;
+    border-top: 1px solid var(--borda);
+}
+
+.informacoes {
+    padding: 22px 0 8px;
+}
+
+.informacoes h3 {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.grade-informacoes {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px 28px;
+}
+
+.item-informacao span {
+    display: block;
+    margin-bottom: 7px;
+    color: var(--texto-secundario);
+    font-size: 0.9rem;
+}
+
+.item-informacao p {
+    overflow-wrap: anywhere;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+/* Botão de edição */
+.botao {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 25px;
+}   
+
+.botao button {
+    width: auto;
+    min-width: 150px;
+    background: var(--noite);
+    color: var(--branco);
+    padding: 8px;
+    border-radius: 5px;
+
+}
+
+.botao button:hover {
+    background: var(--madrugada);
+    color: var(--capim);
+}
+
+/* Rodapé */
+footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 18px;
+    min-height: 64px;
+    padding: 20px 5%;
+    color: rgba(255, 255, 255, 0.7);
+    background: var(--madrugada);
+    font-size: 0.95rem;
+}
+
+footer a {
+    color: var(--capim);
+    font-weight: bold;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+.separador {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    .container {
+        width: calc(100% - 28px);
+        margin: 24px auto;
+    }
+
+    .dados-perfil {
+        padding: 20px;
+    }
+
+    .grade-informacoes {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .imagem {
+        align-items: flex-start;
+    }
+
+    .foto {
+        width: 86px;
+        height: 86px;
+    }
+
+    footer {
+        gap: 10px;
+        padding: 18px;
+    }
+}

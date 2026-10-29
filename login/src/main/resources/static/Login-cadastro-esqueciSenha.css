@@ -1,0 +1,253 @@
+:root {
+    --nuvem: #a7dfff;
+    --noite: #023fb4;
+    --madrugada: #001635;
+    --grama: #2c5a3e;
+    --capim: #d7ff55;
+    --estrelada: #e9cc0a;
+    --cinza: #929AA1;
+    --branco: #ffffff;
+    --borda: #d6e0e8;
+    --texto-secundario: #596875;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--madrugada);
+    
+    background-color: var(--nuvem);
+    background-image: url("https://i.pinimg.com/736x/df/6a/c6/df6ac6d36ff15097bc801da2eb936aaa.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+/* Cabeçalho */
+.cabecalho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 18px;
+    padding: 24px 5%;
+    color: var(--branco);
+    background: var(--madrugada);
+}
+
+.logo h1,
+.cabecalho h1 {
+    font-size: 2rem;
+    line-height: 1.25;
+}
+
+.logo h1 span,
+.cabecalho h1 span {
+    color: var(--capim);
+}
+
+.cabecalho p {
+    margin-top: 7px;
+    color: var(--cinza);
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.cabecalho nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+.cabecalho nav a {
+    color: var(--nuvem);
+    text-decoration: none;
+}
+
+.cabecalho nav a:hover,
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* Área principal e cartões dos formulários */
+.pagina {
+    width: 100%;
+    flex: 1;
+    padding: 38px 20px;
+}
+
+.area-formulario {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.abaLogin,
+.abaCriar {
+    width: 100%;
+    max-width: 520px;
+    padding: 34px;
+    background: var(--branco);
+    border: 1px solid var(--borda);
+    border-radius: 16px;
+    box-shadow: 0 5px 18px rgba(0, 22, 53, 0.08);
+}
+
+h2 {
+    margin-bottom: 8px;
+    color: var(--madrugada);
+    font-size: 1.8rem;
+}
+
+.descricao {
+    margin-bottom: 24px;
+    color: var(--texto-secundario);
+    line-height: 1.5;
+}
+
+/* Campos */
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-bottom: 17px;
+}
+
+.campo label {
+    font-size: 0.98rem;
+    font-weight: bold;
+}
+
+.campo input,
+.campo select {
+    width: 100%;
+    padding: 12px 13px;
+    color: var(--madrugada);
+    background: var(--branco);
+    border: 1px solid #b8c4d0;
+    border-radius: 8px;
+    font: inherit;
+}
+
+.campo input:focus,
+.campo select:focus {
+    outline: 2px solid var(--nuvem);
+    border-color: var(--noite);
+}
+
+/* Botões e links auxiliares */
+button,
+.botao-link {
+    display: inline-block;
+    width: 100%;
+    padding: 12px 16px;
+    border: 0;
+    border-radius: 8px;
+    color: var(--capim);
+    background: var(--noite);
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+
+}
+
+button:hover,
+.botao-link:hover {
+    background: var(--madrugada);
+}
+
+.esqueci {
+    margin: 2px 0 18px;
+    text-align: right;
+}
+
+.esqueci a,
+.voltar-login a {
+    color: var(--noite);
+    font-weight: bold;
+}
+
+.convite-cadastro,
+.voltar-login {
+    margin-top: 20px;
+    color: var(--texto-secundario);
+    text-align: center;
+}
+
+.convite-cadastro {
+    margin-bottom: 12px;
+}
+
+.linha-cadastro {
+    margin: 20px 0;
+    border: 0;
+    border-top: 1px solid var(--borda);
+}
+
+/* Rodapé */
+footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 18px;
+    min-height: 64px;
+    padding: 20px 5%;
+    color: rgba(255, 255, 255, 0.7);
+    background: var(--madrugada);
+    font-size: 0.95rem;
+}
+
+footer a {
+    color: var(--capim);
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.separador {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Ajustes para telas menores */
+@media (max-width: 600px) {
+    .cabecalho {
+        padding: 20px;
+    }
+
+    .logo h1,
+    .cabecalho h1 {
+        font-size: 1.6rem;
+    }
+
+    .cabecalho nav {
+        gap: 16px;
+    }
+
+    .pagina {
+        padding: 24px 14px;
+    }
+
+    .abaLogin,
+    .abaCriar {
+        padding: 24px 20px;
+    }
+
+    footer {
+        gap: 10px;
+        padding: 18px;
+    }
+}
+/* Mensagens de retorno do Java */
+.mensagem { padding: 11px 13px; margin-bottom: 16px; border-radius: 8px; line-height: 1.4; }
+.mensagem.erro { color: #842029; background: #f8d7da; border: 1px solid #f5c2c7; }
+.mensagem.sucesso { color: #0f5132; background: #d1e7dd; border: 1px solid #badbcc; }

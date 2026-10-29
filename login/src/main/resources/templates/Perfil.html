@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil | Biblioteca Virtual</title>
+    <link rel="stylesheet" th:href="@{/Perfil.css}">
+</head>
+<body>
+    <header class="cabecalho">
+        <div class="logo">
+            <h1>Biblioteca <span>Virtual</span></h1>
+        </div>
+        <nav>
+            <a th:href="@{/perfil}">Início</a>
+            <a href="#livros">Livros</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="titulo-pagina">
+            <h2>Meu perfil</h2>
+            <p>Consulte e gerencie suas informações pessoais.</p>
+        </section>
+
+        <section class="dados-perfil">
+            <div class="imagem">
+                <div class="foto">
+                    <label for="fotoPerfil" class="texto-foto">Adicionar foto</label>
+                    <input type="file" id="fotoPerfil" name="fotoPerfil" accept="image/*" aria-label="Escolher foto de perfil">
+                </div>
+                <div class="dados-usuario">
+                    <h3 th:text="${usuario.nome}">Nome do usuário</h3>
+                    <p th:text="${usuario.tipoUsuario}">Tipo de usuário</p>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="informacoes">
+                <h3>Dados pessoais</h3>
+                <div class="grade-informacoes">
+                    <div class="item-informacao">
+                        <span>Nome completo</span>
+                        <p th:text="${usuario.nome}">Nome</p>
+                    </div>
+                    <div class="item-informacao">
+                        <span>E-mail</span>
+                        <p th:text="${usuario.email}">E-mail</p>
+                    </div>
+                    <div class="item-informacao">
+                        <span>Telefone</span>
+                        <p th:text="${usuario.telefone == null or #strings.isEmpty(usuario.telefone) ? 'Não informado' : usuario.telefone}">Telefone</p>
+                    </div>
+                    <div class="item-informacao">
+                        <span>Data de nascimento</span>
+                        <p th:text="${#temporals.format(usuario.nascimento, 'dd/MM/yyyy')}">Data de nascimento</p>
+                    </div>
+                    <div class="item-informacao">
+                        <span>Tipo de usuário</span>
+                        <p th:text="${usuario.tipoUsuario}">Tipo de usuário</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="botao">
+                <form th:action="@{/sair}" method="post"><button type="submit">Sair da conta</button></form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <span>© 2026 Biblioteca Virtual</span>
+        <span class="separador"> | </span>
+        <a href="#sobre">Sobre o projeto</a>
+        <span class="separador"> | </span>
+        <a href="#contato">Contato</a>
+    </footer>
+</body>
+</html>

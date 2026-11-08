@@ -1,0 +1,9 @@
+/* Estilos iniciais: adapte à identidade visual já existente no projeto. */
+* { box-sizing: border-box; }
+body { margin: 0; font-family: Arial, sans-serif; color: #001635; background: #f5f9fc; }
+header, main { padding: 1.5rem; }
+main { max-width: 1100px; margin: auto; }
+form { display: grid; gap: .8rem; max-width: 480px; }
+input, textarea, button { padding: .75rem; font: inherit; }
+button { cursor: pointer; }
+#catalogo, #favoritos, #lista-admin { display: grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap: 1rem; }

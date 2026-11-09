@@ -1,0 +1,116 @@
+/* Área administrativa */
+.admin {
+    width: min(1120px, 92%);
+    margin: 40px auto;
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 32px;
+    align-items: start
+}
+
+.admin h2 {
+    font-size: 24px;
+    margin-bottom: 16px
+}
+
+.admin form {
+    border: 1px solid var(--borda);
+    padding: 24px;
+    box-shadow: 0 8px 25px rgba(0, 22, 53, .08)
+}
+
+.campo textarea {
+    padding: 11px 13px;
+    border: 1px solid #b8c4d0;
+    border-radius: 5px;
+    font: inherit;
+    resize: vertical;
+    min-height: 100px
+}
+
+.campo textarea:focus {
+    border-color: var(--noite);
+    outline: 2px solid var(--nuvem)
+}
+
+.campo [aria-invalid=true] {
+    border-color: #c0392b
+}
+
+.btn-sec {
+    background: #fff;
+    color: var(--madrugada);
+    border: 1px solid #9ca8aa;
+    margin-top: 8px
+}
+
+.btn-sec:hover {
+    background: var(--nuvem)
+}
+
+.tabela {
+    overflow-x: auto
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px
+}
+
+th {
+    text-align: left;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--grama);
+    padding: 10px;
+    border-bottom: 2px solid var(--madrugada)
+}
+
+td {
+    padding: 10px;
+    border-bottom: 1px solid var(--borda);
+    vertical-align: middle
+}
+
+td img,
+.mini {
+    width: 38px;
+    height: 54px;
+    object-fit: cover;
+    display: block
+}
+
+.mini {
+    background: var(--nuvem);
+    color: var(--noite);
+    font: 700 9px 'Playfair Display', serif;
+    display: flex;
+    align-items: center;
+    text-align: center
+}
+
+.acao {
+    background: none;
+    border: 0;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    color: var(--noite);
+    padding: 4px 8px
+}
+
+.acao.excluir {
+    color: #c0392b
+}
+
+.acao:hover {
+    text-decoration: underline
+}
+
+@media(max-width:860px) {
+    .admin {
+        grid-template-columns: 1fr
+    }
+}

@@ -1,2 +1,27 @@
 <!DOCTYPE html>
-<html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Favoritos</title><link rel="stylesheet" href="css/style.css"></head><body><main><h1>Meus favoritos</h1><section id="favoritos"></section></main><script src="js/favoritos.js"></script></body></html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favoritos | Biblioteca Virtual</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body data-pagina="favoritos">
+    <main>
+        <div class="titulo-pagina">
+            <h1>Meus favoritos</h1>
+            <p>Os livros que você guardou para ler depois.</p>
+        </div>
+        <section class="secao">
+            <p class="msg" id="aviso" role="alert" tabindex="-1"></p>
+            <div class="livros" id="favoritos"></div>
+        </section>
+    </main>
+    <script src="js/api.js"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/favoritos.js"></script>
+</body>
+
+</html>

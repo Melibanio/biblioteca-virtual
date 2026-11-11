@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package br.com.biblioteca.dao;
 
 import br.com.biblioteca.config.Conexao;
@@ -48,3 +49,6 @@ public class UsuarioDAO {
         return null;
     }
 }
+=======
+
+>>>>>>> 66d42127ecf7fa6c05a94acc7ba45d697b57f7d7

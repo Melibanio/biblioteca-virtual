@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 package br.com.biblioteca.service;
 
@@ -58,4 +59,8 @@ public class LivroService {
             throw new IllegalArgumentException("O autor é obrigatório.");
         }
     }
+=======
+public class LivroService {
+    
+>>>>>>> 66d42127ecf7fa6c05a94acc7ba45d697b57f7d7
 }

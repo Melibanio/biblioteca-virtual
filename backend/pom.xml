@@ -28,7 +28,10 @@
         </dependency>
     </dependencies>
     <build>
+<<<<<<< HEAD
         <sourceDirectory>src</sourceDirectory>
+=======
+>>>>>>> 66d42127ecf7fa6c05a94acc7ba45d697b57f7d7
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

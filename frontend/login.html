@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrar | Biblioteca Virtual</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body data-pagina="login">
+    <main>
+        <div class="titulo-pagina">
+            <h1>Entrar</h1>
+            <p>Acesse sua conta para favoritar livros.</p>
+        </div>
+        <div class="caixa">
+            <p class="msg" id="msg" role="alert" tabindex="-1"></p>
+            <form id="form-login" novalidate>
+                <div class="campo"><label for="email">E-mail</label><input id="email" name="email" type="email"
+                        autocomplete="email" required></div>
+                <div class="campo"><label for="senha">Senha</label><input id="senha" name="senha" type="password"
+                        autocomplete="current-password" required></div>
+                <button class="btn" type="submit">Entrar</button>
+            </form>
+            <p class="rodape-form">Ainda não tem conta? <a href="cadastro.html">Criar conta</a></p>
+        </div>
+    </main>
+    <script src="js/api.js"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/login.js"></script>
+</body>
+
+</html>

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package br.com.biblioteca.model;
 
 public class Favorito {
@@ -47,8 +46,5 @@ public class Favorito {
     public void setLivroId(int livroId) {
         this.livroId = livroId;
     }
-=======
-public class Favorito {
-    
->>>>>>> 66d42127ecf7fa6c05a94acc7ba45d697b57f7d7
+
 }

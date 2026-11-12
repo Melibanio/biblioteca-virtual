@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package br.com.biblioteca.controller;
 
 import br.com.biblioteca.model.Livro;
@@ -216,8 +215,5 @@ public class LivroController implements HttpHandler {
 
         enviar(ex, codigo, resposta);
     }
-=======
-public u {
-    
->>>>>>> 66d42127ecf7fa6c05a94acc7ba45d697b57f7d7
+
 }

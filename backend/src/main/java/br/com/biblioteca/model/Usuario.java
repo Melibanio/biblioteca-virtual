@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package br.com.biblioteca.model;
 
 public class Usuario {
@@ -68,8 +67,4 @@ public class Usuario {
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
-=======
-public class Usuario {
-    
->>>>>>> 66d42127ecf7fa6c05a94acc7ba45d697b57f7d7
 }

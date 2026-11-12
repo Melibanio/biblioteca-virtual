@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package br.com.biblioteca.service;
 
 import br.com.biblioteca.dao.UsuarioDAO;
@@ -50,8 +49,5 @@ public class UsuarioService {
 
         return usuario;
     }
-=======
-public class UsuarioService {
-    
->>>>>>> 66d42127ecf7fa6c05a94acc7ba45d697b57f7d7
+
 }

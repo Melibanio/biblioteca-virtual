@@ -24,3 +24,51 @@ CREATE TABLE IF NOT EXISTS favorito (
     CONSTRAINT fk_favorito_livro FOREIGN KEY (livro_id) REFERENCES livro(id),
     CONSTRAINT uk_favorito UNIQUE (usuario_id, livro_id)
 );
+
+CREATE TABLE IF NOT EXISTS categoria (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    descricao VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS livro_categoria (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    livro_id INT NOT NULL,
+    categoria_id INT NOT NULL,
+
+    FOREIGN KEY (livro_id) REFERENCES livro (id),
+    FOREIGN KEY (categoria_id) REFERENCES categoria(id),
+
+    UNIQUE (livro_id, categoria_id)
+);
+
+CREATE TABLE IF NOT EXISTS avaliacao (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    livro_id INT NOT NULL,
+    nota INT NOT NULL,
+    comentario VARCHAR(500),
+    data_avaliacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (usuario_id) REFERENCES usuario(id),
+    FOREIGN KEY (livro_id) REFERENCES livro(id),
+
+    CHECK (nota BETWEEN 1 AND 5),
+    UNIQUE (usuario_id, livro_id)
+);
+
+CREATE TABLE IF NOT EXISTS historico_leitura (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    livro_id INT NOT NULL,
+    progresso INT DEFAULT 0,
+    status VARCHAR(30) DEFAULT 'NAO_INICIADO',
+    data_inicio DATE,
+    data_conclusao DATE,
+
+    FOREIGN KEY (usuario_id) REFERENCES usuario(id),
+    FOREIGN KEY (livro_id) REFERENCES livro(id),
+
+    CHECK (progresso BETWEEN 0 AND 100),
+    UNIQUE (usuario_id, livro_id)
+);

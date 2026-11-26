@@ -1,7 +1,7 @@
 package br.com.biblioteca.dao;
 
 import br.com.biblioteca.config.Conexao;
-import br.com.biblioteca.model.Favorito;
+import br.com.biblioteca.model.Livro;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,30 +9,98 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FavoritoDAO {
+public class LivroDAO {
 
-    public void adicionar(int usuarioId, int livroId) throws SQLException {
+    public List<Livro> listar() throws SQLException {
 
-        String sql = "INSERT INTO favorito (usuario_id, livro_id) VALUES (?, ?)";
+        List<Livro> livros = new ArrayList<>();
+
+        String sql = "SELECT id, titulo, autor, genero, descricao, capa FROM livro ORDER BY titulo";
+
+        try (Connection con = Conexao.conectar();
+                PreparedStatement ps = con.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+
+                int id = rs.getInt("id");
+                String titulo = rs.getString("titulo");
+                String autor = rs.getString("autor");
+                String genero = rs.getString("genero");
+                String descricao = rs.getString("descricao");
+                String capa = rs.getString("capa");
+
+                Livro livro = new Livro(
+                        id, titulo, autor, genero, descricao, capa);
+
+                livros.add(livro);
+            }
+        }
+
+        return livros;
+    }
+
+    public Livro buscarPorId(int id) throws SQLException {
+
+        String sql = "SELECT id, titulo, autor, genero, descricao, capa FROM livro WHERE id = ?";
 
         try (Connection con = Conexao.conectar();
                 PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setInt(1, usuarioId);
-            ps.setInt(2, livroId);
+            ps.setInt(1, id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+
+                if (rs.next()) {
+
+                    int livroId = rs.getInt("id");
+                    String titulo = rs.getString("titulo");
+                    String autor = rs.getString("autor");
+                    String genero = rs.getString("genero");
+                    String descricao = rs.getString("descricao");
+                    String capa = rs.getString("capa");
+
+                    Livro livro = new Livro(
+                            livroId, titulo, autor, genero, descricao, capa);
+
+                    return livro;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public void cadastrar(Livro livro) throws SQLException {
+
+        String sql = "INSERT INTO livro (titulo, autor, genero, descricao, capa) VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection con = Conexao.conectar();
+                PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, livro.getTitulo());
+            ps.setString(2, livro.getAutor());
+            ps.setString(3, livro.getGenero());
+            ps.setString(4, livro.getDescricao());
+            ps.setString(5, livro.getCapa());
+
             ps.executeUpdate();
         }
     }
 
-    public boolean remover(int usuarioId, int livroId) throws SQLException {
+    public boolean atualizar(Livro livro) throws SQLException {
 
-        String sql = "DELETE FROM favorito WHERE usuario_id = ? AND livro_id = ?";
+        String sql = "UPDATE livro SET titulo = ?, autor = ?, genero = ?, descricao = ?, capa = ? WHERE id = ?";
 
         try (Connection con = Conexao.conectar();
                 PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setInt(1, usuarioId);
-            ps.setInt(2, livroId);
+            ps.setString(1, livro.getTitulo());
+            ps.setString(2, livro.getAutor());
+            ps.setString(3, livro.getGenero());
+            ps.setString(4, livro.getDescricao());
+            ps.setString(5, livro.getCapa());
+            ps.setInt(6, livro.getId());
 
             int resultado = ps.executeUpdate();
 
@@ -40,31 +108,18 @@ public class FavoritoDAO {
         }
     }
 
-    public List<Favorito> listarPorUsuario(int usuarioId) throws SQLException {
+    public boolean excluir(int id) throws SQLException {
 
-        List<Favorito> favoritos = new ArrayList<>();
-
-        String sql = "SELECT id, usuario_id, livro_id FROM favorito WHERE usuario_id = ?";
+        String sql = "DELETE FROM livro WHERE id = ?";
 
         try (Connection con = Conexao.conectar();
                 PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setInt(1, usuarioId);
+            ps.setInt(1, id);
 
-            try (ResultSet rs = ps.executeQuery()) {
+            int resultado = ps.executeUpdate();
 
-                while (rs.next()) {
-
-                    int id = rs.getInt("id");
-                    int usuario = rs.getInt("usuario_id");
-                    int livro = rs.getInt("livro_id");
-
-                    Favorito favorito = new Favorito(id, usuario, livro);
-                    favoritos.add(favorito);
-                }
-            }
+            return resultado > 0;
         }
-
-        return favoritos;
     }
 }

@@ -14,7 +14,9 @@ public final class Conexao {
     private static final String URL = "jdbc:h2:file:./database/biblioteca";
     private static final String USUARIO = "sa";
     private static final String SENHA = "";
+
     private static boolean inicializado = false;
+
     private Conexao() {}
 
     public static synchronized Connection conectar() throws SQLException {

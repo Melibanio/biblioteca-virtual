@@ -1,5 +1,11 @@
+
+}
+
 package br.com.biblioteca.config;
 
+import java.io.IOException;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -7,63 +13,120 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import org.h2.tools.RunScript;
+
 public final class Conexao {
 
     private static final String USUARIO = "sa";
     private static final String SENHA = "";
-    private Conexao() {}
 
-    public static Connection conectar() throws SQLException {
+    private static boolean inicializado = false;
 
-        Path banco = localizarBanco();
+    private Conexao() {
+    }
+
+    public static synchronized Connection conectar() throws SQLException {
+
+        Path pastaProjeto = localizarPastaProjeto();
+        Path banco = localizarBanco(pastaProjeto);
 
         try {
             Class.forName("org.h2.Driver");
+
+            if (banco.getParent() != null) {
+                Files.createDirectories(banco.getParent());
+            }
+
+            String caminho = banco.toAbsolutePath()
+                    .normalize()
+                    .toString()
+                    .replace("\\", "/");
+
+            String url = "jdbc:h2:file:" + caminho;
+
+            Connection conexao = DriverManager.getConnection(
+                    url, USUARIO, SENHA);
+
+            if (!inicializado) {
+
+                Path arquivoSQL = pastaProjeto.resolve(
+                        "database/biblioteca.sql");
+
+                try (Reader leitor = Files.newBufferedReader(
+                        arquivoSQL, StandardCharsets.UTF_8)) {
+
+                    RunScript.execute(conexao, leitor);
+
+                    inicializado = true;
+
+                    System.out.println(
+                            "Banco de dados inicializado com sucesso!");
+
+                } catch (IOException | SQLException e) {
+
+                    conexao.close();
+
+                    throw new SQLException(
+                            "Erro ao inicializar as tabelas do banco.", e);
+                }
+            }
+
+            return conexao;
+
         } catch (ClassNotFoundException e) {
-            throw new SQLException("Driver do H2 não encontrado. Confira a dependência no pom.xml.", e);
+
+            throw new SQLException(
+                    "Driver do H2 não encontrado.", e);
+
+        } catch (IOException e) {
+
+            throw new SQLException(
+                    "Não foi possível localizar o arquivo SQL.", e);
         }
-
-        String caminho = banco.toAbsolutePath().normalize().toString().replace("\\", "/");
-        String url = "jdbc:h2:file:" + caminho + ";IFEXISTS=TRUE";
-
-        return DriverManager.getConnection(url, USUARIO, SENHA);
     }
 
-    private static Path localizarBanco() throws SQLException {
+    private static Path localizarPastaProjeto() throws SQLException {
 
-        String caminhoConfigurado = System.getProperty("biblioteca.db.path");
+        Path atual = Paths.get("")
+                .toAbsolutePath()
+                .normalize();
 
-        if (caminhoConfigurado != null && !caminhoConfigurado.isBlank()) {
-            Path banco = Paths.get(caminhoConfigurado.trim());
-            String nome = banco.getFileName().toString();
+        while (atual != null) {
 
-            if (nome.endsWith(".mv.db")) {
-                banco = banco.resolveSibling(nome.substring(0, nome.length() - 6));
+            Path arquivoSQL = atual.resolve(
+                    "database/biblioteca.sql");
+
+            if (Files.isRegularFile(arquivoSQL)) {
+                return atual;
             }
 
-            if (Files.isRegularFile(Paths.get(banco.toString() + ".mv.db"))) {
-                return banco;
-            }
-
-            throw new SQLException("O banco informado em biblioteca.db.path não foi encontrado.");
-        }
-
-        Path pastaAtual = Paths.get("").toAbsolutePath().normalize();
-
-        while (pastaAtual != null) {
-
-            Path banco = pastaAtual.resolve("database").resolve("biblioteca");
-            Path arquivoBanco = Paths.get(banco.toString() + ".mv.db");
-
-            if (Files.isRegularFile(arquivoBanco)) {
-                return banco;
-            }
-
-            pastaAtual = pastaAtual.getParent();
+            atual = atual.getParent();
         }
 
         throw new SQLException(
-                "Não foi encontrado database/biblioteca.mv.db. "
-                + "Abra o projeto pela pasta correta ou confira se o arquivo do banco está presente.");
+                "Não foi possível encontrar database/biblioteca.sql.");
+    }
+
+    private static Path localizarBanco(Path pastaProjeto) {
+
+        String caminhoConfigurado = System.getProperty(
+                "biblioteca.db.path");
+
+        if (caminhoConfigurado != null
+                && !caminhoConfigurado.isBlank()) {
+
+            Path banco = Paths.get(caminhoConfigurado.trim());
+
+            String nome = banco.getFileName().toString();
+
+            if (nome.endsWith(".mv.db")) {
+                banco = banco.resolveSibling(
+                        nome.substring(0, nome.length() - 6));
+            }
+
+            return banco;
+        }
+
+        return pastaProjeto.resolve("database/biblioteca");
     }
 }

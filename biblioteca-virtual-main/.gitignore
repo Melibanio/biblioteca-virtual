@@ -1,6 +1,0 @@
-target/
-.vscode/
-*.class
-dados/*.mv.db
-dados/*.lock.db
-dados/*.trace.db

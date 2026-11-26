@@ -8,7 +8,7 @@ import java.sql.Statement;
 public class Conexao {
 
     private static final String CAMINHO_BANCO = configuracao(
-            "biblioteca.db", "BIBLIOTECA_DB", "./dados/biblioteca");
+            "biblioteca.db", "BIBLIOTECA_DB", "./database/biblioteca");
 
     private static final String URL = "jdbc:h2:file:" + CAMINHO_BANCO
             + ";DB_CLOSE_ON_EXIT=FALSE";

@@ -13,99 +13,49 @@ import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class LivroController implements HttpHandler {
+
     private final LivroService service = new LivroService();
     private final Gson gson = new Gson();
+
+    private static class DadosLeitura {
+        Integer livroId;
+        Integer progresso;
+    }
+
     @Override
     public void handle(HttpExchange ex) throws IOException {
 
         liberarCors(ex);
 
+        if (ex.getRequestMethod().equals("OPTIONS")) {
+            ex.sendResponseHeaders(204, -1);
+            return;
+        }
+
+        String caminho = ex.getRequestURI().getPath();
+        String metodo = ex.getRequestMethod();
+
         try {
-            String metodo = ex.getRequestMethod();
-            if (metodo.equals("OPTIONS")) {
-                ex.sendResponseHeaders(204, -1);
+            boolean leitura = caminho.equals("/api/leitura")
+                    || caminho.startsWith("/api/leitura/");
+
+            String base = leitura ? "/api/leitura" : "/api/livros";
+
+            if (!caminho.equals(base) && !caminho.startsWith(base + "/")) {
+                erro(ex, 404, "Rota não encontrada.");
                 return;
             }
 
-            String caminho = ex.getRequestURI().getPath();
-            String resto = caminho.substring("/api/livros".length());
-            resto = resto.replace("/", "");
-            Integer id = null;
-            if (!resto.isEmpty()) {
-                id = lerId(resto);
-            }
+            String resto = caminho.substring(base.length()).replace("/", "");
+            Integer id = resto.isEmpty() ? null : lerId(resto);
 
-            if (metodo.equals("GET")) {
-                if (id == null) {
-                    enviar(ex, 200, service.listar());
-                } else {
-                    Livro livro = service.buscarPorId(id);
-                    if (livro == null) {
-                        erro(ex, 404, "Livro não encontrado.");
-                    } else {
-                        enviar(ex, 200, livro);
-                    }
-                }
-
-                return;
-            }
-
-            Usuario usuario = UsuarioController.usuarioLogado(ex);
-            if (usuario == null) {
-                erro(ex, 401, "Faça login para continuar.");
-                return;
-            }
-            if (!UsuarioController.ehAdmin(usuario)) {
-                erro(ex, 403, "Acesso restrito ao administrador.");
-                return;
-            }
-            if (metodo.equals("POST")) {
-                String dados = corpo(ex);
-                Livro livro = gson.fromJson(dados, Livro.class);
-                if (livro == null) {
-                    throw new IllegalArgumentException("Dados do livro não enviados.");
-                }
-                service.cadastrar(livro);
-                Map<String, String> resposta = new HashMap<>();
-                resposta.put("mensagem", "Livro cadastrado com sucesso.");
-                enviar(ex, 201, resposta);
-            } else if (metodo.equals("PUT")) {
-
-                if (id == null) {
-                    throw new IllegalArgumentException("Informe o id do livro na URL.");
-                }
-
-                Livro livro = gson.fromJson(corpo(ex), Livro.class);
-
-                if (livro == null) {
-                    throw new IllegalArgumentException("Dados do livro não enviados.");
-                }
-
-                livro.setId(id);
-
-                if (service.atualizar(livro)) {
-
-                    Map<String, String> resposta = new HashMap<>();
-                    resposta.put("mensagem", "Livro atualizado com sucesso.");
-
-                    enviar(ex, 200, resposta);
-
-                } else {
-                    erro(ex, 404, "Livro não encontrado.");
-                }
-
-            } else if (metodo.equals("DELETE")) {
-
-                if (id == null) {
-                    throw new IllegalArgumentException("Informe o id do livro na URL.");
-                }
-
-                excluir(ex, id);
-
+            if (leitura) {
+                tratarLeitura(ex, metodo, id);
             } else {
-                erro(ex, 405, "Método não permitido.");
+                tratarLivros(ex, metodo, id);
             }
 
         } catch (JsonSyntaxException e) {
@@ -114,59 +64,229 @@ public class LivroController implements HttpHandler {
         } catch (IllegalArgumentException e) {
             erro(ex, 400, e.getMessage());
 
+        } catch (SQLException e) {
+            if (e.getSQLState() != null && e.getSQLState().startsWith("23")) {
+                erro(ex, 409, "Existem registros relacionados a este livro.");
+            } else {
+                e.printStackTrace();
+                erro(ex, 500, "Erro ao acessar o banco de dados.");
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             erro(ex, 500, "Erro interno no servidor.");
         }
     }
 
-    private void excluir(HttpExchange ex, int id) throws Exception {
+    // Operações dos livros
 
-        try {
-            boolean excluido = service.excluir(id);
-            if (excluido) {
-                Map<String, String> resposta = new HashMap<>();
-                resposta.put("mensagem", "Livro excluído com sucesso.");
-                enviar(ex, 200, resposta);
+    private void tratarLivros(HttpExchange ex, String metodo, Integer id)
+            throws Exception {
+
+        if (metodo.equals("GET")) {
+
+            if (id == null) {
+                enviar(ex, 200, service.listar());
             } else {
-                erro(ex, 404, "Livro não encontrado.");
+                Livro livro = service.buscarPorId(id);
+
+                if (livro == null) {
+                    erro(ex, 404, "Livro não encontrado.");
+                } else {
+                    enviar(ex, 200, livro);
+                }
             }
-        } catch (SQLException e) {
-            if (e.getSQLState() != null && e.getSQLState().startsWith("23")) {
-                erro(ex, 409,
-        "Não é possível excluir: o livro está nos favoritos de algum usuário.");
-            } else {
-                throw e;
-            }
+            return;
+        }
+
+        Usuario usuario = UsuarioController.usuarioLogado(ex);
+
+        if (usuario == null) {
+            erro(ex, 401, "Faça login para continuar.");
+            return;
+        }
+
+        if (!UsuarioController.ehAdmin(usuario)) {
+            erro(ex, 403, "Acesso restrito ao administrador.");
+            return;
+        }
+
+        switch (metodo) {
+            case "POST":
+                if (id != null) {
+                    throw new IllegalArgumentException(
+                            "Utilize a rota principal para cadastrar.");
+                }
+                cadastrar(ex);
+                break;
+
+            case "PUT":
+                if (id == null) {
+                    throw new IllegalArgumentException(
+                            "Informe o ID do livro.");
+                }
+                atualizar(ex, id);
+                break;
+
+            case "DELETE":
+                if (id == null) {
+                    throw new IllegalArgumentException(
+                            "Informe o ID do livro.");
+                }
+                excluir(ex, id);
+                break;
+
+            default:
+                ex.getResponseHeaders().set(
+                        "Allow", "GET, POST, PUT, DELETE, OPTIONS");
+                erro(ex, 405, "Método não permitido.");
         }
     }
+
+    private void cadastrar(HttpExchange ex) throws Exception {
+
+        Livro livro = gson.fromJson(corpo(ex), Livro.class);
+
+        if (livro == null) {
+            throw new IllegalArgumentException("Informe os dados do livro.");
+        }
+
+        service.cadastrar(livro);
+        enviar(ex, 201, mensagem("Livro cadastrado com sucesso."));
+    }
+
+    private void atualizar(HttpExchange ex, int id) throws Exception {
+
+        Livro livro = gson.fromJson(corpo(ex), Livro.class);
+
+        if (livro == null) {
+            throw new IllegalArgumentException("Informe os dados do livro.");
+        }
+
+        livro.setId(id);
+
+        if (service.atualizar(livro)) {
+            enviar(ex, 200, mensagem("Livro atualizado com sucesso."));
+        } else {
+            erro(ex, 404, "Livro não encontrado.");
+        }
+    }
+
+    private void excluir(HttpExchange ex, int id) throws Exception {
+
+        if (service.excluir(id)) {
+            enviar(ex, 200, mensagem("Livro excluído com sucesso."));
+        } else {
+            erro(ex, 404, "Livro não encontrado.");
+        }
+    }
+
+    // Histórico de leitura
+
+    private void tratarLeitura(HttpExchange ex, String metodo, Integer id)
+            throws Exception {
+
+        Usuario usuario = UsuarioController.usuarioLogado(ex);
+
+        if (usuario == null) {
+            erro(ex, 401, "Faça login para acompanhar sua leitura.");
+            return;
+        }
+
+        switch (metodo) {
+            case "GET":
+                if (id == null) {
+                    enviar(ex, 200, service.listarHistorico(usuario.getId()));
+                } else {
+                    Map<String, Object> historico =
+                            service.buscarHistorico(usuario.getId(), id);
+
+                    if (historico == null) {
+                        erro(ex, 404, "Histórico não encontrado.");
+                    } else {
+                        enviar(ex, 200, historico);
+                    }
+                }
+                break;
+
+            case "POST":
+                DadosLeitura inicio = gson.fromJson(
+                        corpo(ex), DadosLeitura.class);
+
+                if (id != null || inicio == null || inicio.livroId == null) {
+                    throw new IllegalArgumentException(
+                            "Informe um livro válido.");
+                }
+
+                enviar(ex, 201, service.iniciarLeitura(
+                        usuario.getId(), inicio.livroId));
+                break;
+
+            case "PUT":
+                DadosLeitura dados = gson.fromJson(
+                        corpo(ex), DadosLeitura.class);
+
+                if (id == null || dados == null || dados.progresso == null) {
+                    throw new IllegalArgumentException(
+                            "Informe o livro e o progresso.");
+                }
+
+                enviar(ex, 200, service.atualizarProgresso(
+                        usuario.getId(), id, dados.progresso));
+                break;
+
+            default:
+                ex.getResponseHeaders().set(
+                        "Allow", "GET, POST, PUT, OPTIONS");
+                erro(ex, 405, "Método não permitido.");
+        }
+    }
+
 
     private int lerId(String texto) {
 
         try {
-            return Integer.parseInt(texto);
+            int id = Integer.parseInt(texto);
+
+            if (id <= 0) {
+                throw new NumberFormatException();
+            }
+
+            return id;
 
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("ID inválido.");
         }
     }
 
-    // Libera a comunicação com o frontend
+
+    private Map<String, String> mensagem(String texto) {
+        return Map.of("mensagem", texto);
+    }
+
     private void liberarCors(HttpExchange ex) {
 
-        ex.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
+        String origem = ex.getRequestHeaders().getFirst("Origin");
 
-        ex.getResponseHeaders().add(
-                "Access-Control-Allow-Methods",
-                "GET, POST, PUT, DELETE, OPTIONS");
+        Set<String> permitidas = Set.of(
+                "http://localhost:8080",
+                "http://127.0.0.1:8080",
+                "http://localhost:5500",
+                "http://127.0.0.1:5500");
 
-        ex.getResponseHeaders().add(
-                "Access-Control-Allow-Headers",
-                "Content-Type, Authorization");
+        if (origem != null && permitidas.contains(origem)) {
+            ex.getResponseHeaders().set("Access-Control-Allow-Origin", origem);
+            ex.getResponseHeaders().set("Vary", "Origin");
+            ex.getResponseHeaders().set(
+                    "Access-Control-Allow-Methods",
+                    "GET, POST, PUT, DELETE, OPTIONS");
+            ex.getResponseHeaders().set(
+                    "Access-Control-Allow-Headers",
+                    "Content-Type, Authorization");
+        }
     }
 
     private String corpo(HttpExchange ex) throws IOException {
-
         return new String(
                 ex.getRequestBody().readAllBytes(),
                 StandardCharsets.UTF_8);
@@ -175,33 +295,22 @@ public class LivroController implements HttpHandler {
     private void enviar(HttpExchange ex, int codigo, Object objeto)
             throws IOException {
 
-        String json = gson.toJson(objeto);
-
-        byte[] bytes = json.getBytes(StandardCharsets.UTF_8);
+        byte[] dados = gson.toJson(objeto)
+                .getBytes(StandardCharsets.UTF_8);
 
         ex.getResponseHeaders().set(
-                "Content-Type",
-                "application/json; charset=UTF-8");
+                "Content-Type", "application/json; charset=UTF-8");
 
-        ex.sendResponseHeaders(codigo, bytes.length);
+        ex.sendResponseHeaders(codigo, dados.length);
 
         try (OutputStream saida = ex.getResponseBody()) {
-            saida.write(bytes);
+            saida.write(dados);
         }
     }
 
-    private void erro(HttpExchange ex, int codigo, String mensagem)
+    private void erro(HttpExchange ex, int codigo, String texto)
             throws IOException {
 
-        Map<String, String> resposta = new HashMap<>();
-
-        if (mensagem == null) {
-            mensagem = "Dados inválidos.";
-        }
-
-        resposta.put("mensagem", mensagem);
-
-        enviar(ex, codigo, resposta);
+        enviar(ex, codigo, mensagem(texto));
     }
-
 }

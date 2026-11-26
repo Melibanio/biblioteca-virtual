@@ -16,15 +16,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 public class UsuarioController implements HttpHandler {
 
-    // Tempo de duração da sessão: 8 horas
     private static final long DURACAO_SESSAO = 8L * 60 * 60 * 1000;
-
-    // Guarda as sessões dos usuários
     private static final Map<String, Sessao> SESSOES = new ConcurrentHashMap<>();
-
     private static final SecureRandom ALEATORIO = new SecureRandom();
-
-    // Dados da sessão
     private static class Sessao {
 
         Usuario usuario;
@@ -36,14 +30,12 @@ public class UsuarioController implements HttpHandler {
         }
     }
 
-    // Dados recebidos no cadastro
     private static class DadosCadastro {
         String nome;
         String email;
         String senha;
     }
 
-    // Dados recebidos no login
     private static class DadosLogin {
         String email;
         String senha;
@@ -52,7 +44,6 @@ public class UsuarioController implements HttpHandler {
     private UsuarioService service = new UsuarioService();
     private Gson gson = new Gson();
 
-    // Verifica se o usuário está logado
     public static Usuario usuarioLogado(HttpExchange ex) {
 
         String cabecalho = ex.getRequestHeaders().getFirst("Authorization");
@@ -69,7 +60,6 @@ public class UsuarioController implements HttpHandler {
             return null;
         }
 
-        // Verifica se a sessão expirou
         if (sessao.expiraEm < System.currentTimeMillis()) {
             SESSOES.remove(token);
             return null;
@@ -78,7 +68,6 @@ public class UsuarioController implements HttpHandler {
         return sessao.usuario;
     }
 
-    // Verifica se o usuário é administrador
     public static boolean ehAdmin(Usuario usuario) {
 
         if (usuario == null) {
@@ -137,7 +126,6 @@ public class UsuarioController implements HttpHandler {
         }
     }
 
-    // Cadastra um novo usuário
     private void cadastrar(HttpExchange ex) throws Exception {
 
         String json = corpo(ex);
@@ -159,7 +147,6 @@ public class UsuarioController implements HttpHandler {
             email = email.trim().toLowerCase();
         }
 
-        // Todo cadastro recebe o perfil de estudante
         service.cadastrar(nome, email, dados.senha);
 
         Map<String, String> resposta = new HashMap<>();
@@ -168,7 +155,6 @@ public class UsuarioController implements HttpHandler {
         enviar(ex, 201, resposta);
     }
 
-    // Realiza o login do usuário
     private void login(HttpExchange ex) throws Exception {
 
         String json = corpo(ex);
@@ -188,10 +174,8 @@ public class UsuarioController implements HttpHandler {
             return;
         }
 
-        // O hash da senha não será enviado ao frontend
         usuario.setSenhaHash(null);
 
-        // Cria o token de acesso
         String token = novoToken();
 
         long expiracao = System.currentTimeMillis() + DURACAO_SESSAO;
@@ -200,7 +184,6 @@ public class UsuarioController implements HttpHandler {
 
         SESSOES.put(token, sessao);
 
-        // Prepara os dados do usuário
         Map<String, Object> dadosUsuario = new HashMap<>();
 
         dadosUsuario.put("id", usuario.getId());
@@ -208,7 +191,6 @@ public class UsuarioController implements HttpHandler {
         dadosUsuario.put("email", usuario.getEmail());
         dadosUsuario.put("tipo", usuario.getTipo().toLowerCase());
 
-        // Prepara a resposta do login
         Map<String, Object> resposta = new HashMap<>();
 
         resposta.put("token", token);
@@ -217,7 +199,6 @@ public class UsuarioController implements HttpHandler {
         enviar(ex, 200, resposta);
     }
 
-    // Gera um token de acesso
     private String novoToken() {
 
         byte[] bytes = new byte[32];
@@ -229,7 +210,6 @@ public class UsuarioController implements HttpHandler {
                 .encodeToString(bytes);
     }
 
-    // Libera a comunicação com o frontend
     private void liberarCors(HttpExchange ex) {
 
         ex.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
@@ -243,7 +223,6 @@ public class UsuarioController implements HttpHandler {
                 "Content-Type, Authorization");
     }
 
-    // Recebe os dados enviados pelo frontend
     private String corpo(HttpExchange ex) throws IOException {
 
         return new String(
@@ -251,7 +230,6 @@ public class UsuarioController implements HttpHandler {
                 StandardCharsets.UTF_8);
     }
 
-    // Envia uma resposta
     private void enviar(HttpExchange ex, int codigo, Object objeto)
             throws IOException {
 
@@ -270,7 +248,6 @@ public class UsuarioController implements HttpHandler {
         }
     }
 
-    // Envia mensagens de erro
     private void erro(HttpExchange ex, int codigo, String mensagem)
             throws IOException {
 

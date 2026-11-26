@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca Virtual | Literatura Brasileira</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body data-pagina="inicio">
+    <main>
+        <section class="hero">
+            <div class="hero-content"><span class="rotulo">LITERATURA BRASILEIRA</span>
+                <h1>Histórias que<br><span>moram em nós.</span></h1>
+                <p>Explore clássicos, poesias, romances e grandes autores da literatura brasileira em um só lugar.</p><a
+                    href="#catalogo" class="btn">Explorar livros</a>
+            </div>
+        </section>
+        <section class="secao" id="catalogo"><span class="rotulo">CATÁLOGO</span>
+            <h2>Encontre sua próxima leitura</h2>
+            <div class="busca"><input id="busca" type="search" placeholder="Buscar por título ou autor"
+                    aria-label="Buscar por título ou autor"></div>
+            <div class="filtros" id="filtros" aria-label="Filtrar por categoria"></div>
+            <p class="contador" id="contador" aria-live="polite"></p>
+            <p class="msg" id="aviso" role="alert" tabindex="-1"></p>
+            <div class="livros" id="catalogo-grade"></div>
+        </section>
+    </main>
+    <script src="js/api.js"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/livros.js"></script>
+</body>
+
+</html>

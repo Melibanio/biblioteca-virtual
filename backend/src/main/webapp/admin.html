@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administração | Biblioteca Virtual</title>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+
+<body data-pagina="admin">
+    <main>
+        <div class="titulo-pagina">
+            <h1>Administração do acervo</h1>
+            <p>Cadastre, edite e exclua os livros da biblioteca.</p>
+        </div>
+        <p class="msg" id="aviso" role="alert" tabindex="-1" style="width:min(1120px,92%);margin:20px auto 0"></p>
+        <div class="admin">
+            <form id="form-livro" novalidate>
+                <h2 id="titulo-form">Adicionar livro</h2>
+                <input type="hidden" id="id" name="id">
+                <div class="campo"><label for="titulo">Título</label><input id="titulo" name="titulo" maxlength="150" required></div>
+                <div class="campo"><label for="autor">Autor</label><input id="autor" name="autor" maxlength="100" required></div>
+                <div class="campo"><label for="genero">Categoria</label><input id="genero" name="genero" maxlength="80" required placeholder="Ex.: Romance"></div>
+                <div class="campo"><label for="capa">URL da capa (opcional)</label><input id="capa" name="capa" type="url" maxlength="255" placeholder="https://..."></div>
+                <div class="campo"><label for="descricao">Descrição</label><textarea id="descricao" name="descricao"></textarea></div>
+                <button class="btn" id="salvar" type="submit">Cadastrar livro</button>
+                <button class="btn btn-sec" id="cancelar" type="button" hidden>Cancelar edição</button>
+            </form>
+            <section>
+                <h2>Livros cadastrados <small id="total"></small></h2>
+                <div class="tabela">
+                    <table>
+                        <thead><tr><th>Capa</th><th>Título</th><th>Autor</th><th>Categoria</th><th>Ações</th></tr></thead>
+                        <tbody id="lista-admin"></tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+    <script src="js/api.js"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+
+</html>

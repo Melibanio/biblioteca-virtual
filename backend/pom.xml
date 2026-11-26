@@ -60,6 +60,29 @@
 
     <plugins>
 
+<<<<<<< HEAD
+=======
+      <!-- Compilação compatível com o Java 17 utilizado pelo projeto. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.13.0</version>
+        <configuration>
+          <release>17</release>
+        </configuration>
+      </plugin>
+
+      <!-- Permite iniciar o servidor HTTP pela classe principal. -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.5.0</version>
+        <configuration>
+          <mainClass>br.com.biblioteca.main</mainClass>
+        </configuration>
+      </plugin>
+
+>>>>>>> master
       <plugin>
         <artifactId>maven-war-plugin</artifactId>
         <version>3.2.2</version>

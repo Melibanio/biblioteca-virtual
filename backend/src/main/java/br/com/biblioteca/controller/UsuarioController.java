@@ -20,15 +20,11 @@ public class UsuarioController implements HttpHandler {
     private static final long DURACAO_SESSAO = 8L * 60 * 60 * 1000;
     private static final long DURACAO_CODIGO = 10L * 60 * 1000;
     private static final int MAX_TENTATIVAS = 5;
-
     private static final Map<String, Sessao> SESSOES = new ConcurrentHashMap<>();
     private static final Map<String, Recuperacao> RECUPERACOES = new ConcurrentHashMap<>();
-
     private static final SecureRandom ALEATORIO = new SecureRandom();
-
     private final UsuarioService service = new UsuarioService();
     private final Gson gson = new Gson();
-
     private static class Sessao {
         Usuario usuario;
         long expiraEm;

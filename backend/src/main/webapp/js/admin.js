@@ -18,11 +18,8 @@ let livros = [];
 
 // ---- Acesso: exige login e perfil de administrador
 const usuario = sessao.usuario;
-<<<<<<< HEAD
-const autorizado = !!(sessao.token && usuario && usuario.tipo === 'admin');
-=======
+
 const autorizado = !!(sessao.token && usuario && String(usuario.tipo).toLowerCase() === 'admin');
->>>>>>> master
 
 if (!autorizado) {
   document.querySelector('.admin').hidden = true;

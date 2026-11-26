@@ -60,8 +60,7 @@
 
     <plugins>
 
-<<<<<<< HEAD
-=======
+
       <!-- Compilação compatível com o Java 17 utilizado pelo projeto. -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -82,7 +81,6 @@
         </configuration>
       </plugin>
 
->>>>>>> master
       <plugin>
         <artifactId>maven-war-plugin</artifactId>
         <version>3.2.2</version>

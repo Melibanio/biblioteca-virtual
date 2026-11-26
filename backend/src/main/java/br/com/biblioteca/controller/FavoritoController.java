@@ -67,7 +67,6 @@ public class FavoritoController implements HttpHandler {
         }
     }
 
-    // Lista os livros favoritos do usuário
     private void listar(HttpExchange ex, Usuario usuario) throws Exception {
 
         List<Livro> livros = new ArrayList<>();
@@ -86,7 +85,6 @@ public class FavoritoController implements HttpHandler {
         enviar(ex, 200, livros);
     }
 
-    // Adiciona um livro aos favoritos
     private void adicionar(HttpExchange ex, Usuario usuario) throws Exception {
 
         String json = corpo(ex);
@@ -122,7 +120,6 @@ public class FavoritoController implements HttpHandler {
         }
     }
 
-    // Remove um livro dos favoritos
     private void remover(HttpExchange ex, Usuario usuario) throws Exception {
 
         String caminho = ex.getRequestURI().getPath();
@@ -157,7 +154,6 @@ public class FavoritoController implements HttpHandler {
         }
     }
 
-    // Libera o acesso do frontend à API
     private void liberarCors(HttpExchange ex) {
 
         ex.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
@@ -171,7 +167,6 @@ public class FavoritoController implements HttpHandler {
                 "Content-Type, Authorization");
     }
 
-    // Lê os dados enviados pelo frontend
     private String corpo(HttpExchange ex) throws IOException {
 
         return new String(
@@ -179,7 +174,6 @@ public class FavoritoController implements HttpHandler {
                 StandardCharsets.UTF_8);
     }
 
-    // Envia a resposta da API
     private void enviar(HttpExchange ex, int codigo, Object objeto)
             throws IOException {
 
@@ -198,7 +192,6 @@ public class FavoritoController implements HttpHandler {
         }
     }
 
-    // Envia mensagens de erro
     private void erro(HttpExchange ex, int codigo, String mensagem)
             throws IOException {
 

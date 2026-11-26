@@ -10,9 +10,12 @@ import java.sql.SQLException;
 public class UsuarioDAO {
 
     public void cadastrar(Usuario usuario) throws SQLException {
+
         String sql = "INSERT INTO usuario (nome, email, senha_hash, tipo) VALUES (?, ?, ?, ?)";
+
         try (Connection con = Conexao.conectar();
                 PreparedStatement ps = con.prepareStatement(sql)) {
+
             ps.setString(1, usuario.getNome());
             ps.setString(2, usuario.getEmail());
             ps.setString(3, usuario.getSenhaHash());
@@ -20,60 +23,84 @@ public class UsuarioDAO {
             ps.executeUpdate();
         }
     }
-    public void salvarAdministrador(String nome, String email, String senhaHash) throws SQLException {
-
-        String atualizar = "UPDATE usuario SET nome = ?, senha_hash = ?, tipo = 'ADMIN' WHERE email = ?";
-
-        try (Connection con = Conexao.conectar();
-                PreparedStatement ps = con.prepareStatement(atualizar)) {
-
-            ps.setString(1, nome);
-            ps.setString(2, senhaHash);
-            ps.setString(3, email);
-
-            int resultado = ps.executeUpdate();
-
-            if (resultado > 0) {
-                return;
-            }
-        }
-
-        String inserir = "INSERT INTO usuario (nome, email, senha_hash, tipo) VALUES (?, ?, ?, 'ADMIN')";
-
-        try (Connection con = Conexao.conectar();
-                PreparedStatement ps = con.prepareStatement(inserir)) {
-
-            ps.setString(1, nome);
-            ps.setString(2, email);
-            ps.setString(3, senhaHash);
-            ps.executeUpdate();
-        }
-    }
 
     public Usuario buscarPorEmail(String email) throws SQLException {
 
-        String sql = "SELECT id, nome, email, senha_hash, tipo FROM usuario WHERE email = ?";
+        String sql = "SELECT id, nome, email, senha_hash, tipo "
+                + "FROM usuario WHERE LOWER(email) = LOWER(?)";
+
         try (Connection con = Conexao.conectar();
                 PreparedStatement ps = con.prepareStatement(sql)) {
+
             ps.setString(1, email);
+
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    int id = rs.getInt("id");
-                    String nome = rs.getString("nome");
-                    String emailUsuario = rs.getString("email");
-                    String senha = rs.getString("senha_hash");
-                    String tipo = rs.getString("tipo");
-                    Usuario usuario = new Usuario(
-                            id,
-                            nome,
-                            emailUsuario,
-                            senha,
-                            tipo);
-                    return usuario;
+                    return montarUsuario(rs);
                 }
             }
         }
+
         return null;
     }
-}
 
+    public Usuario buscarPorId(int id) throws SQLException {
+
+        String sql = "SELECT id, nome, email, senha_hash, tipo FROM usuario WHERE id = ?";
+
+        try (Connection con = Conexao.conectar();
+                PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return montarUsuario(rs);
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public boolean atualizarPerfil(int id, String nome, String email)
+            throws SQLException {
+
+        String sql = "UPDATE usuario SET nome = ?, email = ? WHERE id = ?";
+
+        try (Connection con = Conexao.conectar();
+                PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, nome);
+            ps.setString(2, email);
+            ps.setInt(3, id);
+
+            return ps.executeUpdate() > 0;
+        }
+    }
+
+    public boolean atualizarSenha(int id, String senhaHash)
+            throws SQLException {
+
+        String sql = "UPDATE usuario SET senha_hash = ? WHERE id = ?";
+
+        try (Connection con = Conexao.conectar();
+                PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, senhaHash);
+            ps.setInt(2, id);
+
+            return ps.executeUpdate() > 0;
+        }
+    }
+
+    private Usuario montarUsuario(ResultSet rs) throws SQLException {
+
+        return new Usuario(
+                rs.getInt("id"),
+                rs.getString("nome"),
+                rs.getString("email"),
+                rs.getString("senha_hash"),
+                rs.getString("tipo"));
+    }
+}

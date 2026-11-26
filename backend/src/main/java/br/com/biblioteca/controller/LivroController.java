@@ -24,7 +24,6 @@ public class LivroController implements HttpHandler {
 
         try {
             String metodo = ex.getRequestMethod();
-            // Trata as requisições OPTIONS
             if (metodo.equals("OPTIONS")) {
                 ex.sendResponseHeaders(204, -1);
                 return;
@@ -38,7 +37,6 @@ public class LivroController implements HttpHandler {
                 id = lerId(resto);
             }
 
-            // Consulta os livros
             if (metodo.equals("GET")) {
                 if (id == null) {
                     enviar(ex, 200, service.listar());
@@ -54,18 +52,15 @@ public class LivroController implements HttpHandler {
                 return;
             }
 
-            // Verifica se o usuário está logado
             Usuario usuario = UsuarioController.usuarioLogado(ex);
             if (usuario == null) {
                 erro(ex, 401, "Faça login para continuar.");
                 return;
             }
-            // Verifica se o usuário é administrador
             if (!UsuarioController.ehAdmin(usuario)) {
                 erro(ex, 403, "Acesso restrito ao administrador.");
                 return;
             }
-            // Cadastra um livro
             if (metodo.equals("POST")) {
                 String dados = corpo(ex);
                 Livro livro = gson.fromJson(dados, Livro.class);
@@ -76,7 +71,6 @@ public class LivroController implements HttpHandler {
                 Map<String, String> resposta = new HashMap<>();
                 resposta.put("mensagem", "Livro cadastrado com sucesso.");
                 enviar(ex, 201, resposta);
-                // Atualiza um livro
             } else if (metodo.equals("PUT")) {
 
                 if (id == null) {
@@ -102,7 +96,6 @@ public class LivroController implements HttpHandler {
                     erro(ex, 404, "Livro não encontrado.");
                 }
 
-                // Exclui um livro
             } else if (metodo.equals("DELETE")) {
 
                 if (id == null) {
@@ -127,7 +120,6 @@ public class LivroController implements HttpHandler {
         }
     }
 
-    // Exclui um livro
     private void excluir(HttpExchange ex, int id) throws Exception {
 
         try {
@@ -149,7 +141,6 @@ public class LivroController implements HttpHandler {
         }
     }
 
-    // Converte o ID para número
     private int lerId(String texto) {
 
         try {
@@ -174,7 +165,6 @@ public class LivroController implements HttpHandler {
                 "Content-Type, Authorization");
     }
 
-    // Recebe os dados enviados pelo frontend
     private String corpo(HttpExchange ex) throws IOException {
 
         return new String(
@@ -182,7 +172,6 @@ public class LivroController implements HttpHandler {
                 StandardCharsets.UTF_8);
     }
 
-    // Envia uma resposta
     private void enviar(HttpExchange ex, int codigo, Object objeto)
             throws IOException {
 
@@ -201,7 +190,6 @@ public class LivroController implements HttpHandler {
         }
     }
 
-    // Envia mensagens de erro
     private void erro(HttpExchange ex, int codigo, String mensagem)
             throws IOException {
 

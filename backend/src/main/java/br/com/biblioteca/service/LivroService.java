@@ -9,23 +9,19 @@ public class LivroService {
 
     private final LivroDAO dao = new LivroDAO();
 
-    // Lista todos os livros
     public List<Livro> listar() throws SQLException {
         return dao.listar();
     }
 
-    // Busca um livro pelo ID
     public Livro buscarPorId(int id) throws SQLException {
         return dao.buscarPorId(id);
     }
 
-    // Cadastra um novo livro
     public void cadastrar(Livro livro) throws SQLException {
         validar(livro);
         dao.cadastrar(livro);
     }
 
-    // Atualiza os dados de um livro
     public boolean atualizar(Livro livro) throws SQLException {
         validar(livro);
 
@@ -36,7 +32,6 @@ public class LivroService {
         return dao.atualizar(livro);
     }
 
-    // Exclui um livro pelo ID
     public boolean excluir(int id) throws SQLException {
         if (id <= 0) {
             throw new IllegalArgumentException("ID inválido.");
@@ -45,7 +40,6 @@ public class LivroService {
         return dao.excluir(id);
     }
 
-    // Verifica os dados obrigatórios
     private void validar(Livro livro) {
 
         if (livro == null || livro.getTitulo() == null

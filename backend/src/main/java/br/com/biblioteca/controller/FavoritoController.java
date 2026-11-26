@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class FavoritoController implements HttpHandler {
 
@@ -24,43 +25,55 @@ public class FavoritoController implements HttpHandler {
         Integer livroId;
     }
 
-    private FavoritoDAO favoritoDAO = new FavoritoDAO();
-    private LivroService livroService = new LivroService();
-    private Gson gson = new Gson();
+    private final FavoritoDAO favoritoDAO = new FavoritoDAO();
+    private final LivroService livroService = new LivroService();
+    private final Gson gson = new Gson();
 
     @Override
     public void handle(HttpExchange ex) throws IOException {
 
         liberarCors(ex);
 
-        try {
-            String metodo = ex.getRequestMethod();
-            if (metodo.equals("OPTIONS")) {
-                ex.sendResponseHeaders(204, -1);
-                return;
-            }
+        if (ex.getRequestMethod().equals("OPTIONS")) {
+            ex.sendResponseHeaders(204, -1);
+            return;
+        }
 
+        try {
             Usuario usuario = UsuarioController.usuarioLogado(ex);
+
             if (usuario == null) {
                 erro(ex, 401, "Faça login para continuar.");
                 return;
             }
 
-            if (metodo.equals("GET")) {
-                listar(ex, usuario);
-            } else if (metodo.equals("POST")) {
-                adicionar(ex, usuario);
-            } else if (metodo.equals("DELETE")) {
-                remover(ex, usuario);
-            } else {
-                erro(ex, 405, "Método não permitido.");
+            switch (ex.getRequestMethod()) {
+                case "GET":
+                    listar(ex, usuario);
+                    break;
+                case "POST":
+                    adicionar(ex, usuario);
+                    break;
+                case "DELETE":
+                    remover(ex, usuario);
+                    break;
+                default:
+                    ex.getResponseHeaders().set(
+                            "Allow", "GET, POST, DELETE, OPTIONS");
+                    erro(ex, 405, "Método não permitido.");
             }
+
         } catch (JsonSyntaxException e) {
             erro(ex, 400, "JSON inválido.");
-
         } catch (IllegalArgumentException e) {
             erro(ex, 400, e.getMessage());
-
+        } catch (SQLException e) {
+            if (e.getSQLState() != null && e.getSQLState().startsWith("23")) {
+                erro(ex, 409, "Este livro já está nos favoritos ou não existe.");
+            } else {
+                e.printStackTrace();
+                erro(ex, 500, "Erro ao acessar os favoritos.");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             erro(ex, 500, "Erro interno no servidor.");
@@ -70,13 +83,10 @@ public class FavoritoController implements HttpHandler {
     private void listar(HttpExchange ex, Usuario usuario) throws Exception {
 
         List<Livro> livros = new ArrayList<>();
-
         List<Favorito> favoritos = favoritoDAO.listarPorUsuario(usuario.getId());
 
         for (Favorito favorito : favoritos) {
-
             Livro livro = livroService.buscarPorId(favorito.getLivroId());
-
             if (livro != null) {
                 livros.add(livro);
             }
@@ -87,9 +97,7 @@ public class FavoritoController implements HttpHandler {
 
     private void adicionar(HttpExchange ex, Usuario usuario) throws Exception {
 
-        String json = corpo(ex);
-
-        DadosFavorito dados = gson.fromJson(json, DadosFavorito.class);
+        DadosFavorito dados = gson.fromJson(corpo(ex), DadosFavorito.class);
 
         if (dados == null || dados.livroId == null || dados.livroId <= 0) {
             throw new IllegalArgumentException("Informe o livroId.");
@@ -102,89 +110,73 @@ public class FavoritoController implements HttpHandler {
             return;
         }
 
-        try {
-            favoritoDAO.adicionar(usuario.getId(), dados.livroId);
+        favoritoDAO.adicionar(usuario.getId(), dados.livroId);
 
-            Map<String, String> resposta = new HashMap<>();
-            resposta.put("mensagem", "Livro adicionado aos favoritos.");
-
-            enviar(ex, 201, resposta);
-
-        } catch (SQLException e) {
-
-            if (e.getSQLState() != null && e.getSQLState().startsWith("23")) {
-                erro(ex, 409, "Este livro já está nos favoritos.");
-            } else {
-                throw e;
-            }
-        }
+        Map<String, String> resposta = new HashMap<>();
+        resposta.put("mensagem", "Livro adicionado aos favoritos.");
+        enviar(ex, 201, resposta);
     }
 
     private void remover(HttpExchange ex, Usuario usuario) throws Exception {
 
         String caminho = ex.getRequestURI().getPath();
+        String textoId = caminho.substring("/api/favoritos".length()).replace("/", "");
 
-        String id = caminho.substring("/api/favoritos".length());
-        id = id.replace("/", "");
-
-        if (id.isEmpty()) {
-            throw new IllegalArgumentException("Informe o id do livro na URL.");
+        if (textoId.isBlank()) {
+            throw new IllegalArgumentException("Informe o ID do livro na URL.");
         }
 
-        int livroId;
-
-        try {
-            livroId = Integer.parseInt(id);
-
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("ID inválido.");
-        }
-
+        int livroId = lerId(textoId);
         boolean removido = favoritoDAO.remover(usuario.getId(), livroId);
 
         if (removido) {
-
             Map<String, String> resposta = new HashMap<>();
             resposta.put("mensagem", "Livro removido dos favoritos.");
-
             enviar(ex, 200, resposta);
-
         } else {
             erro(ex, 404, "Favorito não encontrado.");
         }
     }
 
+    private int lerId(String texto) {
+        try {
+            int id = Integer.parseInt(texto);
+            if (id <= 0) {
+                throw new NumberFormatException();
+            }
+            return id;
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("ID inválido.");
+        }
+    }
+
     private void liberarCors(HttpExchange ex) {
 
-        ex.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
+        String origem = ex.getRequestHeaders().getFirst("Origin");
+        Set<String> permitidas = Set.of(
+                "http://localhost:8080", "http://127.0.0.1:8080",
+                "http://localhost:5500", "http://127.0.0.1:5500");
 
-        ex.getResponseHeaders().add(
-                "Access-Control-Allow-Methods",
-                "GET, POST, PUT, DELETE, OPTIONS");
-
-        ex.getResponseHeaders().add(
-                "Access-Control-Allow-Headers",
-                "Content-Type, Authorization");
+        if (origem != null && permitidas.contains(origem)) {
+            ex.getResponseHeaders().set("Access-Control-Allow-Origin", origem);
+            ex.getResponseHeaders().set("Vary", "Origin");
+            ex.getResponseHeaders().set(
+                    "Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS");
+            ex.getResponseHeaders().set(
+                    "Access-Control-Allow-Headers", "Content-Type, Authorization");
+        }
     }
 
     private String corpo(HttpExchange ex) throws IOException {
-
-        return new String(
-                ex.getRequestBody().readAllBytes(),
-                StandardCharsets.UTF_8);
+        return new String(ex.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
     }
 
     private void enviar(HttpExchange ex, int codigo, Object objeto)
             throws IOException {
 
-        String json = gson.toJson(objeto);
-
-        byte[] bytes = json.getBytes(StandardCharsets.UTF_8);
-
+        byte[] bytes = gson.toJson(objeto).getBytes(StandardCharsets.UTF_8);
         ex.getResponseHeaders().set(
-                "Content-Type",
-                "application/json; charset=UTF-8");
-
+                "Content-Type", "application/json; charset=UTF-8");
         ex.sendResponseHeaders(codigo, bytes.length);
 
         try (OutputStream saida = ex.getResponseBody()) {
@@ -192,17 +184,11 @@ public class FavoritoController implements HttpHandler {
         }
     }
 
-    private void erro(HttpExchange ex, int codigo, String mensagem)
+    private void erro(HttpExchange ex, int codigo, String texto)
             throws IOException {
 
         Map<String, String> resposta = new HashMap<>();
-
-        if (mensagem == null) {
-            mensagem = "Dados inválidos.";
-        }
-
-        resposta.put("mensagem", mensagem);
-
+        resposta.put("mensagem", texto == null ? "Dados inválidos." : texto);
         enviar(ex, codigo, resposta);
     }
 }

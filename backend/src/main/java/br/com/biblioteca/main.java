@@ -19,6 +19,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Locale;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -31,26 +32,29 @@ public class main {
         try {
             Path pastaWeb = localizarPastaWeb();
 
-            boolean administradorConfigurado = false;
-
-            try {
-                UsuarioService usuarioService = new UsuarioService();
-                usuarioService.configurarAdministradorPadrao();
-                administradorConfigurado = true;
-            } catch (java.sql.SQLException e) {
-                System.out.println("Aviso: não foi possível configurar o administrador no H2.");
-                e.printStackTrace();
+            // Confere o banco antes de iniciar o servidor.
+            try (Connection conexao = Conexao.conectar();
+                    Statement consulta = conexao.createStatement()) {
+                consulta.execute("SELECT 1");
             }
 
-            HttpServer servidor = HttpServer.create(
-                    new InetSocketAddress(InetAddress.getByName("127.0.0.1"), PORTA), 0);
+            UsuarioService usuarioService = new UsuarioService();
+            usuarioService.configurarAdministradorPadrao();
 
-            servidor.createContext("/api/status", new StatusController());
-            servidor.createContext("/api/livros", new LivroController());
+            HttpServer servidor = HttpServer.create(
+                    new InetSocketAddress(
+                            InetAddress.getByName("127.0.0.1"), PORTA), 0);
 
             UsuarioController usuarioController = new UsuarioController();
+            LivroController livroController = new LivroController();
+
+            servidor.createContext("/api/status", new StatusController());
+            servidor.createContext("/api/livros", livroController);
+            servidor.createContext("/api/leitura", livroController);
             servidor.createContext("/api/usuarios", usuarioController);
             servidor.createContext("/api/login", usuarioController);
+            servidor.createContext("/api/logout", usuarioController);
+            servidor.createContext("/api/recuperar-senha", usuarioController);
             servidor.createContext("/api/favoritos", new FavoritoController());
             servidor.createContext("/", new ArquivosController(pastaWeb));
 
@@ -67,16 +71,12 @@ public class main {
             System.out.println("Servidor: http://localhost:" + PORTA);
             System.out.println("API: http://localhost:" + PORTA + "/api/status");
             System.out.println("Frontend: " + pastaWeb.toAbsolutePath());
-
-            if (administradorConfigurado) {
-                System.out.println("Administrador: admin@biblioteca.com");
-            } else {
-                System.out.println("Atenção: confira a conexão com o banco H2.");
-            }
+            System.out.println("Banco H2 conectado.");
+            System.out.println("Conta administrativa conferida.");
 
         } catch (Exception e) {
             System.out.println("Não foi possível iniciar a Biblioteca Virtual.");
-            System.out.println("Confira a porta 8080 e a conexão com o banco H2.");
+            System.out.println("Confira a porta e a conexão com o banco H2.");
             e.printStackTrace();
         }
     }
@@ -86,13 +86,14 @@ public class main {
         Path atual = Paths.get("").toAbsolutePath().normalize();
 
         while (atual != null) {
-
             Path pastaBackend = atual.resolve("src/main/webapp");
+
             if (Files.isRegularFile(pastaBackend.resolve("index.html"))) {
                 return pastaBackend.toRealPath();
             }
 
             Path pastaProjeto = atual.resolve("backend/src/main/webapp");
+
             if (Files.isRegularFile(pastaProjeto.resolve("index.html"))) {
                 return pastaProjeto.toRealPath();
             }
@@ -100,7 +101,8 @@ public class main {
             atual = atual.getParent();
         }
 
-        throw new IOException("Não foi possível localizar backend/src/main/webapp/index.html.");
+        throw new IOException(
+                "Não foi possível localizar backend/src/main/webapp/index.html.");
     }
 
     private static class StatusController implements HttpHandler {
@@ -108,9 +110,7 @@ public class main {
         @Override
         public void handle(HttpExchange ex) throws IOException {
 
-            ex.getResponseHeaders().set("Access-Control-Allow-Origin", "*");
-            ex.getResponseHeaders().set("Access-Control-Allow-Methods", "GET, OPTIONS");
-            ex.getResponseHeaders().set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+            liberarCors(ex);
 
             if (ex.getRequestMethod().equals("OPTIONS")) {
                 ex.sendResponseHeaders(204, -1);
@@ -125,30 +125,52 @@ public class main {
             try (Connection conexao = Conexao.conectar();
                     Statement consulta = conexao.createStatement()) {
 
-                try (ResultSet rs = consulta.executeQuery("SELECT COUNT(*) FROM livro")) {
-                    rs.next();
+                String[] tabelas = {
+                    "livro", "usuario", "favorito", "historico_leitura"
+                };
+
+                for (String tabela : tabelas) {
+                    try (ResultSet rs = consulta.executeQuery(
+                            "SELECT COUNT(*) FROM " + tabela)) {
+                        rs.next();
+                    }
                 }
 
-                try (ResultSet rs = consulta.executeQuery("SELECT COUNT(*) FROM usuario")) {
-                    rs.next();
-                }
-
-                try (ResultSet rs = consulta.executeQuery("SELECT COUNT(*) FROM favorito")) {
-                    rs.next();
-                }
-
-                enviar(ex, 200, "{\"status\":\"online\",\"banco\":\"conectado\"}");
+                enviar(ex, 200,
+                        "{\"status\":\"online\",\"banco\":\"conectado\"}");
 
             } catch (Exception e) {
                 e.printStackTrace();
-                enviar(ex, 503, "{\"status\":\"erro\",\"mensagem\":\"Servidor iniciado, mas não foi possível conectar ao banco H2.\"}");
+                enviar(ex, 503,
+                        "{\"status\":\"erro\",\"mensagem\":\"Não foi possível conectar ao banco H2.\"}");
             }
         }
 
-        private void enviar(HttpExchange ex, int codigo, String resposta) throws IOException {
-            byte[] dados = resposta.getBytes(java.nio.charset.StandardCharsets.UTF_8);
-            ex.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
+        private void liberarCors(HttpExchange ex) {
+
+            String origem = ex.getRequestHeaders().getFirst("Origin");
+            Set<String> permitidas = Set.of(
+                    "http://localhost:8080", "http://127.0.0.1:8080",
+                    "http://localhost:5500", "http://127.0.0.1:5500");
+
+            if (origem != null && permitidas.contains(origem)) {
+                ex.getResponseHeaders().set("Access-Control-Allow-Origin", origem);
+                ex.getResponseHeaders().set("Vary", "Origin");
+                ex.getResponseHeaders().set("Access-Control-Allow-Methods", "GET, OPTIONS");
+                ex.getResponseHeaders().set("Access-Control-Allow-Headers",
+                        "Content-Type, Authorization");
+            }
+        }
+
+        private void enviar(HttpExchange ex, int codigo, String resposta)
+                throws IOException {
+
+            byte[] dados = resposta.getBytes(
+                    java.nio.charset.StandardCharsets.UTF_8);
+            ex.getResponseHeaders().set(
+                    "Content-Type", "application/json; charset=UTF-8");
             ex.sendResponseHeaders(codigo, dados.length);
+
             try (OutputStream saida = ex.getResponseBody()) {
                 saida.write(dados);
             }
@@ -176,11 +198,11 @@ public class main {
                 default:
                     ex.getResponseHeaders().set("Allow", "GET, HEAD");
                     enviarTexto(ex, 405, "Método não permitido.");
-                    break;
             }
         }
 
-        private void servirArquivo(HttpExchange ex, boolean somenteCabecalho) throws IOException {
+        private void servirArquivo(HttpExchange ex, boolean somenteCabecalho)
+                throws IOException {
 
             String caminho = ex.getRequestURI().getPath();
 
@@ -226,36 +248,31 @@ public class main {
             String extensao = ponto >= 0 ? nome.substring(ponto + 1) : "";
 
             switch (extensao) {
-                case "html":
-                    return "text/html; charset=UTF-8";
-                case "css":
-                    return "text/css; charset=UTF-8";
-                case "js":
-                    return "application/javascript; charset=UTF-8";
-                case "json":
-                    return "application/json; charset=UTF-8";
-                case "png":
-                    return "image/png";
+                case "html": return "text/html; charset=UTF-8";
+                case "css": return "text/css; charset=UTF-8";
+                case "js": return "application/javascript; charset=UTF-8";
+                case "json": return "application/json; charset=UTF-8";
+                case "png": return "image/png";
                 case "jpg":
-                case "jpeg":
-                    return "image/jpeg";
-                case "gif":
-                    return "image/gif";
-                case "svg":
-                    return "image/svg+xml";
-                case "webp":
-                    return "image/webp";
-                case "ico":
-                    return "image/x-icon";
-                default:
-                    return "application/octet-stream";
+                case "jpeg": return "image/jpeg";
+                case "gif": return "image/gif";
+                case "svg": return "image/svg+xml";
+                case "webp": return "image/webp";
+                case "ico": return "image/x-icon";
+                case "pdf": return "application/pdf";
+                default: return "application/octet-stream";
             }
         }
 
-        private void enviarTexto(HttpExchange ex, int codigo, String texto) throws IOException {
-            byte[] dados = texto.getBytes(java.nio.charset.StandardCharsets.UTF_8);
-            ex.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
+        private void enviarTexto(HttpExchange ex, int codigo, String texto)
+                throws IOException {
+
+            byte[] dados = texto.getBytes(
+                    java.nio.charset.StandardCharsets.UTF_8);
+            ex.getResponseHeaders().set(
+                    "Content-Type", "text/plain; charset=UTF-8");
             ex.sendResponseHeaders(codigo, dados.length);
+
             try (OutputStream saida = ex.getResponseBody()) {
                 saida.write(dados);
             }

@@ -72,3 +72,10 @@ CREATE TABLE IF NOT EXISTS historico_leitura (
     CHECK (progresso BETWEEN 0 AND 100),
     UNIQUE (usuario_id, livro_id)
 );
+
+CREATE TABLE IF NOT EXISTS newsletter (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100),
+    email VARCHAR(120) NOT NULL UNIQUE,
+    data_inscricao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

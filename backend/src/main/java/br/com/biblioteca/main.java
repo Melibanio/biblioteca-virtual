@@ -3,7 +3,9 @@ package br.com.biblioteca;
 import br.com.biblioteca.config.Conexao;
 import br.com.biblioteca.controller.FavoritoController;
 import br.com.biblioteca.controller.LivroController;
+import br.com.biblioteca.controller.NewsletterController;
 import br.com.biblioteca.controller.UsuarioController;
+import br.com.biblioteca.service.LivroService;
 import br.com.biblioteca.service.UsuarioService;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -23,7 +25,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class main {
+public class Main {
 
     private static final int PORTA = Integer.getInteger("biblioteca.porta", 8080);
 
@@ -40,6 +42,7 @@ public class main {
 
             UsuarioService usuarioService = new UsuarioService();
             usuarioService.configurarAdministradorPadrao();
+            new LivroService().popularAcervoInicial();
 
             HttpServer servidor = HttpServer.create(
                     new InetSocketAddress(
@@ -56,6 +59,7 @@ public class main {
             servidor.createContext("/api/logout", usuarioController);
             servidor.createContext("/api/recuperar-senha", usuarioController);
             servidor.createContext("/api/favoritos", new FavoritoController());
+            servidor.createContext("/api/newsletter", new NewsletterController());
             servidor.createContext("/", new ArquivosController(pastaWeb));
 
             ExecutorService executor = Executors.newFixedThreadPool(10);

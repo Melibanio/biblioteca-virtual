@@ -18,6 +18,7 @@ grade.addEventListener('click', async e => {
   const b = e.target.closest('[data-fav]'); if (!b) return;
   if (await alternarFavorito(Number(b.dataset.fav), aviso)) mostrar();
 });
+campo.value = new URLSearchParams(location.search).get('busca') || '';
 (async () => {
   try {
     livros = await api('/livros');

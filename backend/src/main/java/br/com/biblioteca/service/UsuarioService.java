@@ -144,6 +144,43 @@ public class UsuarioService {
         }
     }
 
+    public void alterarSenha(int id, String senhaAtual, String novaSenha)
+            throws SQLException {
+
+        if (senhaAtual == null || senhaAtual.isEmpty()) {
+            throw new IllegalArgumentException("Informe a senha atual.");
+        }
+
+        validarSenha(novaSenha);
+
+        Usuario usuario = dao.buscarPorId(id);
+
+        if (usuario == null) {
+            throw new IllegalArgumentException("Usuário não encontrado.");
+        }
+
+        boolean confere;
+
+        try {
+            confere = BCrypt.checkpw(senhaAtual, usuario.getSenhaHash());
+        } catch (IllegalArgumentException e) {
+            confere = false;
+        }
+
+        if (!confere) {
+            throw new IllegalArgumentException("A senha atual está incorreta.");
+        }
+
+        if (senhaAtual.equals(novaSenha)) {
+            throw new IllegalArgumentException(
+                    "A nova senha deve ser diferente da atual.");
+        }
+
+        if (!dao.atualizarSenha(id, BCrypt.hashpw(novaSenha, BCrypt.gensalt()))) {
+            throw new SQLException("Não foi possível atualizar a senha.");
+        }
+    }
+
     private void validarNome(String nome) {
 
         if (nome.isBlank() || nome.length() > 100) {

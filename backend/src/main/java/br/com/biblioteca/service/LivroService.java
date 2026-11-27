@@ -10,6 +10,63 @@ public class LivroService {
 
     private final LivroDAO dao = new LivroDAO();
 
+
+    // Acervo inicial: obras de domínio público com capas em images/capas.
+    private static final String[][] ACERVO_INICIAL = {
+        {"Dom Casmurro", "Machado de Assis", "Romance",
+            "Bentinho, já maduro, narra suas memórias: o amor por Capitu, a vida no Rio de Janeiro do século XIX e a dúvida que marcou sua existência, a suspeita de traição.",
+            "images/capas/dom-casmurro.svg"},
+        {"Memórias Póstumas de Brás Cubas", "Machado de Assis", "Romance",
+            "Um defunto autor conta sua vida com ironia e humor ácido, criticando a sociedade carioca e as vaidades do seu tempo.",
+            "images/capas/memorias-postumas.svg"},
+        {"O Alienista", "Machado de Assis", "Conto",
+            "O médico Simão Bacamarte funda a Casa Verde em Itaguaí e começa a internar quem foge ao seu conceito de normalidade.",
+            "images/capas/o-alienista.svg"},
+        {"Iracema", "José de Alencar", "Romance",
+            "Romance indianista que une a jovem tabajara Iracema ao colonizador português Martim, nas terras do Ceará.",
+            "images/capas/iracema.svg"},
+        {"O Guarani", "José de Alencar", "Romance",
+            "O índio goitacá Peri dedica sua vida a proteger Ceci, filha do fidalgo português Dom Antônio de Mariz.",
+            "images/capas/o-guarani.svg"},
+        {"Triste Fim de Policarpo Quaresma", "Lima Barreto", "Romance",
+            "Funcionário público de patriotismo ingênuo, Policarpo tenta transformar o país com seus ideais e acaba desiludido.",
+            "images/capas/policarpo-quaresma.svg"},
+        {"O Cortiço", "Aluísio Azevedo", "Romance",
+            "A vida em um cortiço do Rio de Janeiro mostra a ambição de João Romão e a força do meio sobre as pessoas, no Naturalismo.",
+            "images/capas/o-cortico.svg"},
+        {"A Escrava Isaura", "Bernardo Guimarães", "Romance",
+            "A história de Isaura e de sua luta pela liberdade, em um romance que ajudou a levar a causa abolicionista ao público.",
+            "images/capas/a-escrava-isaura.svg"},
+        {"O Ateneu", "Raul Pompeia", "Romance",
+            "Sérgio relembra seus anos em um colégio interno e revela as relações de poder e as aparências da escola e da sociedade.",
+            "images/capas/o-ateneu.svg"},
+        {"Vidas Secas", "Graciliano Ramos", "Romance",
+            "Fabiano, Sinhá Vitória, os filhos e a cachorra Baleia enfrentam a seca e a miséria na travessia pelo sertão nordestino.",
+            "images/capas/vidas-secas.svg"},
+        {"Espumas Flutuantes", "Castro Alves", "Poesia",
+            "Único livro publicado em vida pelo poeta, reúne versos líricos e poemas de forte voz social do Romantismo brasileiro.",
+            "images/capas/espumas-flutuantes.svg"}
+    };
+
+    // Cadastra o acervo inicial se o banco estiver vazio e coloca capa
+    // nos livros já cadastrados que tenham o mesmo título e estejam sem capa.
+    public void popularAcervoInicial() throws SQLException {
+
+        if (dao.contar() == 0) {
+
+            for (String[] item : ACERVO_INICIAL) {
+                dao.cadastrar(new Livro(0, item[0], item[1], item[2], item[3], item[4]));
+            }
+
+            System.out.println("Acervo inicial cadastrado (" + ACERVO_INICIAL.length + " livros).");
+            return;
+        }
+
+        for (String[] item : ACERVO_INICIAL) {
+            dao.definirCapaSeVazia(item[0], item[4]);
+        }
+    }
+
     public List<Livro> listar() throws SQLException {
         return dao.listar();
     }
@@ -103,6 +160,10 @@ public class LivroService {
             throw new IllegalArgumentException("O autor é obrigatório.");
         }
 
+        if (livro.getGenero() == null || livro.getGenero().trim().isEmpty()) {
+            throw new IllegalArgumentException("A categoria é obrigatória.");
+        }
+
         if (livro.getTitulo().trim().length() > 150) {
             throw new IllegalArgumentException("O título deve ter até 150 caracteres.");
         }
@@ -122,8 +183,18 @@ public class LivroService {
         livro.setTitulo(livro.getTitulo().trim());
         livro.setAutor(livro.getAutor().trim());
 
-        if (livro.getGenero() != null) {
-            livro.setGenero(livro.getGenero().trim());
+        livro.setGenero(livro.getGenero().trim());
+
+        if (livro.getDescricao() != null) {
+            livro.setDescricao(livro.getDescricao().trim());
+        }
+
+        if (livro.getCapa() != null) {
+            livro.setCapa(livro.getCapa().trim());
+
+            if (livro.getCapa().isEmpty()) {
+                livro.setCapa(null);
+            }
         }
     }
 

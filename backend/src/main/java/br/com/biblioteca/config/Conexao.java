@@ -1,5 +1,8 @@
 package br.com.biblioteca.config;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -8,10 +11,10 @@ import java.sql.Statement;
 public class Conexao {
 
     private static final String CAMINHO_BANCO = configuracao(
-            "biblioteca.db", "BIBLIOTECA_DB", "./database/biblioteca");
+            "biblioteca.db", "BIBLIOTECA_DB", caminhoPadrao());
 
     private static final String URL = "jdbc:h2:file:" + CAMINHO_BANCO
-            + ";DB_CLOSE_ON_EXIT=FALSE";
+            + ";DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE";
 
     private static boolean inicializado = false;
 
@@ -43,6 +46,25 @@ public class Conexao {
         }
 
         inicializado = true;
+    }
+
+    // Procura a pasta "database" do projeto, mesmo que o programa seja
+    // iniciado de dentro da pasta "backend" ou de outra subpasta.
+    private static String caminhoPadrao() {
+
+        Path atual = Paths.get("").toAbsolutePath().normalize();
+
+        while (atual != null) {
+            Path pasta = atual.resolve("database");
+
+            if (Files.isRegularFile(pasta.resolve("biblioteca.sql"))) {
+                return pasta.resolve("biblioteca").toString().replace('\\', '/');
+            }
+
+            atual = atual.getParent();
+        }
+
+        return "./database/biblioteca";
     }
 
     private static String configuracao(

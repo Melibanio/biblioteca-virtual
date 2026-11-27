@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" role="img" aria-label="Capa de MEMÓRIAS PÓSTUMAS DE BRÁS CUBAS">
+<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a2230"/><stop offset="1" stop-color="#120e17"/></linearGradient>
+<clipPath id="c"><rect width="300" height="400"/></clipPath></defs>
+<rect width="300" height="400" fill="url(#g)"/>
+<g clip-path="url(#c)"><path d="M95 45 H205 L160 120 L205 195 H95 L140 120 Z" fill="none" stroke="#d9b45a" stroke-width="5" stroke-linejoin="round"/>
+<path d="M112 55 H188 L150 112 Z" fill="#d9b45a" opacity=".85"/><path d="M122 187 H178 L150 150 Z" fill="#d9b45a"/><rect x="148" y="120" width="4" height="30" fill="#d9b45a"/>
+<rect x="85" y="36" width="130" height="9" fill="#d9b45a"/><rect x="85" y="195" width="130" height="9" fill="#d9b45a"/></g>
+<rect x="14" y="14" width="272" height="372" fill="none" stroke="#d9b45a" stroke-width="1.5" opacity=".7"/>
+<text x="150" y="238" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="26" font-weight="700" fill="#f3ead2" letter-spacing="1">MEMÓRIAS</text><text x="150" y="270" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="26" font-weight="700" fill="#f3ead2" letter-spacing="1">PÓSTUMAS DE</text><text x="150" y="302" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="26" font-weight="700" fill="#f3ead2" letter-spacing="1">BRÁS CUBAS</text>
+<line x1="110" y1="324" x2="190" y2="324" stroke="#d9b45a" stroke-width="2"/>
+<text x="150" y="350" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="14" letter-spacing="3" fill="#f3ead2" opacity=".9">MACHADO DE ASSIS</text>
+</svg>

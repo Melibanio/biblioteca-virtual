@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" role="img" aria-label="Capa de IRACEMA">
+<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b4a52"/><stop offset="1" stop-color="#06282e"/></linearGradient>
+<clipPath id="c"><rect width="300" height="400"/></clipPath></defs>
+<rect width="300" height="400" fill="url(#g)"/>
+<g clip-path="url(#c)"><circle cx="150" cy="150" r="70" fill="#f6c453"/><circle cx="150" cy="150" r="52" fill="#f29b3a" opacity=".55"/>
+<rect x="0" y="150" width="300" height="80" fill="#0f6b6b"/>
+<path d="M0 165 q25 -12 50 0 t50 0 t50 0 t50 0 t50 0 t50 0" fill="none" stroke="#a7e3df" stroke-width="3"/><path d="M0 185 q25 -12 50 0 t50 0 t50 0 t50 0 t50 0 t50 0" fill="none" stroke="#7fcfca" stroke-width="3" opacity=".8"/><path d="M0 205 q25 -12 50 0 t50 0 t50 0 t50 0 t50 0 t50 0" fill="none" stroke="#5db7b2" stroke-width="3" opacity=".6"/>
+<path d="M120 160 h60 l-10 12 h-40 Z" fill="#3b2412"/><path d="M150 100 v60 M150 104 l32 36 h-32 Z" stroke="#3b2412" stroke-width="3" fill="#f3ead2"/></g>
+<rect x="14" y="14" width="272" height="372" fill="none" stroke="#f6c453" stroke-width="1.5" opacity=".7"/>
+<text x="150" y="250" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="38" font-weight="700" fill="#fff6dc" letter-spacing="1">IRACEMA</text>
+<line x1="110" y1="272" x2="190" y2="272" stroke="#f6c453" stroke-width="2"/>
+<text x="150" y="298" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="14" letter-spacing="3" fill="#fff6dc" opacity=".9">JOSÉ DE ALENCAR</text>
+</svg>

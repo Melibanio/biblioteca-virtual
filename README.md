@@ -2,35 +2,25 @@
 
 Projeto acadêmico de biblioteca digital com frontend em HTML, CSS e JavaScript, backend Java, JDBC e banco H2.
 
-## Tecnologias
-- Java 17
-- HTML, CSS e JavaScript puro
-- H2 Database
-- JDBC
-- Gson
-- BCrypt
-- Maven
+## Como executar (Windows, sem Maven)
+1. Instale o JDK 17 ou superior.
+2. Dê dois cliques em `rodar.bat` (ele baixa as bibliotecas na primeira vez, compila e inicia).
+3. Acesse `http://localhost:8080`.
 
-## Como executar
-1. Instale o JDK 17 ou superior e o Maven.
-2. Abra o terminal na pasta principal do projeto (a pasta que contém `backend` e `database`).
-3. Execute `mvn -f backend/pom.xml clean compile`.
-4. Execute `mvn -f backend/pom.xml exec:java`.
-5. Acesse `http://localhost:8080`.
+No VS Code, também é possível executar a classe `br.com.biblioteca.Main` (botão *Run*), desde que as bibliotecas da pasta `lib/` estejam no classpath.
 
-O endpoint `http://localhost:8080/api/status` verifica a disponibilidade da API e a conexão com o banco.
-
-## Banco de dados
-O banco H2 é armazenado em arquivo no caminho `database/biblioteca` por padrão. O schema é carregado automaticamente de `backend/src/main/resources/schema.sql`, criado a partir do script `database/biblioteca.sql`.
-
-É possível alterar o caminho do banco pela propriedade Java `-Dbiblioteca.db=CAMINHO` ou pela variável de ambiente `BIBLIOTECA_DB`.
+## Como executar (com Maven)
+```
+mvn -f backend/pom.xml clean compile
+mvn -f backend/pom.xml exec:java
+```
 
 ## Administrador
-Por padrão, o sistema configura:
 - E-mail: `admin@biblioteca.com`
 - Senha: `Biblioteca@2026`
 
-Para apresentação e uso real, altere as credenciais por meio das variáveis `BIBLIOTECA_ADMIN_EMAIL` e `BIBLIOTECA_ADMIN_SENHA`. Não publique credenciais reais.
+Entre em `http://localhost:8080/login.html` e abra **Administração** no menu (ou `http://localhost:8080/admin.html`).
+Para trocar as credenciais use as variáveis `BIBLIOTECA_ADMIN_EMAIL` e `BIBLIOTECA_ADMIN_SENHA`.
 
-## Observação
-A página inicial servida pelo backend está em `backend/src/main/webapp/index.html`. O `index.html` na raiz é uma página visual independente e não é a entrada da aplicação conectada à API.
+## Banco de dados
+H2 em arquivo (`database/biblioteca`), criado automaticamente a partir de `backend/src/main/resources/schema.sql`.

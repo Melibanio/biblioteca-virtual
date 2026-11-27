@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" role="img" aria-label="Capa de O GUARANI">
+<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16382a"/><stop offset="1" stop-color="#0a1f17"/></linearGradient>
+<clipPath id="c"><rect width="300" height="400"/></clipPath></defs>
+<rect width="300" height="400" fill="url(#g)"/>
+<g clip-path="url(#c)"><path d="M0 200 L60 90 L120 200 Z" fill="#1d4a2b"/><path d="M80 200 L150 60 L220 200 Z" fill="#2c6b3d"/><path d="M180 200 L240 100 L300 200 Z" fill="#1d4a2b"/>
+<path d="M0 200 q75 -30 150 -10 t150 -10 V230 H0 Z" fill="#5aa9c9" opacity=".8"/><circle cx="235" cy="55" r="22" fill="#e9cc0a" opacity=".9"/>
+<path d="M110 195 q40 -10 80 0" stroke="#fff" stroke-width="2" fill="none" opacity=".6"/></g>
+<rect x="14" y="14" width="272" height="372" fill="none" stroke="#e9cc0a" stroke-width="1.5" opacity=".7"/>
+<text x="150" y="250" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="34" font-weight="700" fill="#f1ead0" letter-spacing="1">O GUARANI</text>
+<line x1="110" y1="272" x2="190" y2="272" stroke="#e9cc0a" stroke-width="2"/>
+<text x="150" y="298" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="14" letter-spacing="3" fill="#f1ead0" opacity=".9">JOSÉ DE ALENCAR</text>
+</svg>

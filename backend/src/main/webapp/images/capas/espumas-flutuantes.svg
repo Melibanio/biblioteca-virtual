@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" role="img" aria-label="Capa de ESPUMAS FLUTUANTES">
+<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b7f86"/><stop offset="1" stop-color="#0a3f45"/></linearGradient>
+<clipPath id="c"><rect width="300" height="400"/></clipPath></defs>
+<rect width="300" height="400" fill="url(#g)"/>
+<g clip-path="url(#c)"><circle cx="150" cy="110" r="40" fill="#f6efe0" opacity=".95"/>
+<g fill="none" stroke="#e8fbf8" stroke-width="4"><path d="M10 160 q35 -30 70 0 t70 0 t70 0 t70 0"/><path d="M-20 185 q35 -30 70 0 t70 0 t70 0 t70 0 t70 0" opacity=".8"/><path d="M10 210 q35 -30 70 0 t70 0 t70 0 t70 0" opacity=".6"/></g>
+<g fill="#e8fbf8"><circle cx="60" cy="60" r="7"/><circle cx="240" cy="75" r="9"/><circle cx="80" cy="135" r="4"/><circle cx="225" cy="140" r="5"/><circle cx="50" cy="100" r="3"/></g></g>
+<rect x="14" y="14" width="272" height="372" fill="none" stroke="#e8fbf8" stroke-width="1.5" opacity=".7"/>
+<text x="150" y="250" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="32" font-weight="700" fill="#f6fbfa" letter-spacing="1">ESPUMAS</text><text x="150" y="288" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="32" font-weight="700" fill="#f6fbfa" letter-spacing="1">FLUTUANTES</text>
+<line x1="110" y1="310" x2="190" y2="310" stroke="#e8fbf8" stroke-width="2"/>
+<text x="150" y="336" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="14" letter-spacing="3" fill="#f6fbfa" opacity=".9">CASTRO ALVES</text>
+</svg>

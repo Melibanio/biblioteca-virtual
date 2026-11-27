@@ -94,6 +94,10 @@ public class UsuarioController implements HttpHandler {
                     perfil(ex);
                     break;
 
+                case "/api/usuarios/senha":
+                    if (metodo(ex, "PUT", "PUT, OPTIONS")) alterarSenha(ex);
+                    break;
+
                 case "/api/recuperar-senha":
                     if (metodo(ex, "POST", "POST, OPTIONS")) recuperarSenha(ex);
                     break;
@@ -201,6 +205,30 @@ public class UsuarioController implements HttpHandler {
         } else {
             metodoNaoPermitido(ex, "GET, PUT, OPTIONS");
         }
+    }
+
+    // Alterar a própria senha (exige a senha atual)
+    private void alterarSenha(HttpExchange ex) throws Exception {
+        Usuario sessao = usuarioLogado(ex);
+
+        if (sessao == null) {
+            erro(ex, 401, "Faça login para alterar a senha.");
+            return;
+        }
+
+        JsonObject dados = lerJson(ex);
+
+        service.alterarSenha(
+                sessao.getId(),
+                campo(dados, "senhaAtual"),
+                campo(dados, "novaSenha"));
+
+        // Encerra as outras sessões da conta e mantém a atual.
+        String atual = token(ex);
+        SESSOES.entrySet().removeIf(item -> !item.getKey().equals(atual)
+                && item.getValue().usuario.getId() == sessao.getId());
+
+        enviar(ex, 200, mensagem("Senha alterada com sucesso."));
     }
 
     // Solicitar recuperação de senha

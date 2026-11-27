@@ -18,7 +18,6 @@ let livros = [];
 
 // ---- Acesso: exige login e perfil de administrador
 const usuario = sessao.usuario;
-
 const autorizado = !!(sessao.token && usuario && String(usuario.tipo).toLowerCase() === 'admin');
 
 if (!autorizado) {
@@ -150,11 +149,14 @@ function validarLivro(d) {
 
   if (d.capa) {
     if (d.capa.length > 255) return falha('capa', 'O endereço da capa deve ter até 255 caracteres.');
-    try {
-      const url = new URL(d.capa);
-      if (url.protocol !== 'http:' && url.protocol !== 'https:') throw new Error();
-    } catch {
-      return falha('capa', 'Informe uma URL de capa válida, começando com http:// ou https://.');
+    const local = /^images\/[\w./-]+$/.test(d.capa) && !d.capa.includes('..');
+    if (!local) {
+      try {
+        const url = new URL(d.capa);
+        if (url.protocol !== 'http:' && url.protocol !== 'https:') throw new Error();
+      } catch {
+        return falha('capa', 'Informe uma URL de capa válida (http:// ou https://) ou um arquivo local, como images/capas/livro.svg.');
+      }
     }
   }
   return '';

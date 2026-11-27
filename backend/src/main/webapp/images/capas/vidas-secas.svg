@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" role="img" aria-label="Capa de VIDAS SECAS">
+<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9792b"/><stop offset="1" stop-color="#8a3a10"/></linearGradient>
+<clipPath id="c"><rect width="300" height="400"/></clipPath></defs>
+<rect width="300" height="400" fill="url(#g)"/>
+<g clip-path="url(#c)"><circle cx="210" cy="90" r="62" fill="#fff2b0"/><circle cx="210" cy="90" r="46" fill="#ffd34d"/>
+<path d="M0 200 H300 V215 H0 Z" fill="#7b3a14"/>
+<g stroke="#4a210c" stroke-width="2" fill="none" opacity=".85"><path d="M20 205 l30 6 l24 -5"/><path d="M110 207 l28 5 l30 -6 l25 5"/><path d="M215 206 l28 6 l30 -4"/></g>
+<g stroke="#3b1d0c" stroke-width="5" fill="none" stroke-linecap="round"><path d="M85 200 V120"/><path d="M85 150 l-28 -30"/><path d="M85 135 l30 -32"/><path d="M85 120 l-12 -26"/><path d="M57 120 l-10 -10"/><path d="M115 103 l12 -8"/></g></g>
+<rect x="14" y="14" width="272" height="372" fill="none" stroke="#ffe9a8" stroke-width="1.5" opacity=".7"/>
+<text x="150" y="250" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="38" font-weight="700" fill="#fff4dc" letter-spacing="1">VIDAS</text><text x="150" y="294" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="38" font-weight="700" fill="#fff4dc" letter-spacing="1">SECAS</text>
+<line x1="110" y1="316" x2="190" y2="316" stroke="#ffe9a8" stroke-width="2"/>
+<text x="150" y="342" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="14" letter-spacing="3" fill="#fff4dc" opacity=".9">GRACILIANO RAMOS</text>
+</svg>

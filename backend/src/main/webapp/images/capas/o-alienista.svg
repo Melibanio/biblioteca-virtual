@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" role="img" aria-label="Capa de O ALIENISTA">
+<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a2a6b"/><stop offset="1" stop-color="#231238"/></linearGradient>
+<clipPath id="c"><rect width="300" height="400"/></clipPath></defs>
+<rect width="300" height="400" fill="url(#g)"/>
+<g clip-path="url(#c)"><g fill="none" stroke="#e6c8f5" stroke-width="4" stroke-linecap="round"><path d="M150 120 m0 0 a8 8 0 1 1 8 8 a18 18 0 1 1 -18 -18 a30 30 0 1 1 30 30 a44 44 0 1 1 -44 -44 a58 58 0 1 1 58 58 a72 72 0 1 1 -72 -72"/></g>
+<circle cx="150" cy="120" r="5" fill="#ffd34d"/><rect x="40" y="195" width="220" height="9" fill="#e6c8f5" opacity=".8"/></g>
+<rect x="14" y="14" width="272" height="372" fill="none" stroke="#e6c8f5" stroke-width="1.5" opacity=".7"/>
+<text x="150" y="250" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="32" font-weight="700" fill="#f6e9fb" letter-spacing="1">O ALIENISTA</text>
+<line x1="110" y1="272" x2="190" y2="272" stroke="#e6c8f5" stroke-width="2"/>
+<text x="150" y="298" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="14" letter-spacing="3" fill="#f6e9fb" opacity=".9">MACHADO DE ASSIS</text>
+</svg>

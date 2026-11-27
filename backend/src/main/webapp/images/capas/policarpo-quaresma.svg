@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" role="img" aria-label="Capa de TRISTE FIM DE POLICARPO QUARESMA">
+<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f6b3a"/><stop offset="1" stop-color="#0e3a1f"/></linearGradient>
+<clipPath id="c"><rect width="300" height="400"/></clipPath></defs>
+<rect width="300" height="400" fill="url(#g)"/>
+<g clip-path="url(#c)"><polygon points="150,35 270,120 150,205 30,120" fill="#f1d21a"/><circle cx="150" cy="120" r="50" fill="#1b4fa0"/>
+<path d="M104 112 q46 -16 92 14" stroke="#fff" stroke-width="7" fill="none"/>
+<g fill="#fff"><circle cx="135" cy="125" r="2.5"/><circle cx="160" cy="138" r="2.5"/><circle cx="170" cy="112" r="2.5"/><circle cx="145" cy="108" r="2"/></g></g>
+<rect x="14" y="14" width="272" height="372" fill="none" stroke="#f1d21a" stroke-width="1.5" opacity=".7"/>
+<text x="150" y="238" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="24" font-weight="700" fill="#fff7c2" letter-spacing="1">TRISTE FIM DE</text><text x="150" y="268" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="24" font-weight="700" fill="#fff7c2" letter-spacing="1">POLICARPO</text><text x="150" y="298" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="24" font-weight="700" fill="#fff7c2" letter-spacing="1">QUARESMA</text>
+<line x1="110" y1="320" x2="190" y2="320" stroke="#f1d21a" stroke-width="2"/>
+<text x="150" y="346" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="14" letter-spacing="3" fill="#fff7c2" opacity=".9">LIMA BARRETO</text>
+</svg>

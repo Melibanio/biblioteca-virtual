@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu perfil | Biblioteca Virtual</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body data-pagina="perfil">
+    <main>
+        <section class="perfil-topo">
+            <div class="perfil-topo-conteudo">
+                <div class="perfil-avatar" id="avatar" aria-hidden="true"></div>
+                <div class="perfil-id">
+                    <span class="selo" id="selo"></span>
+                    <h1 id="perfil-nome">Meu perfil</h1>
+                    <p id="perfil-email"></p>
+                </div>
+                <a class="btn btn-claro" id="link-admin" href="admin.html" hidden>Painel de administração</a>
+            </div>
+        </section>
+
+        <div class="perfil-corpo">
+            <p class="msg" id="aviso" role="alert" tabindex="-1"></p>
+
+            <section class="perfil-stats" aria-label="Resumo da sua atividade">
+                <div class="stat"><strong id="st-fav">0</strong><span>Favoritos</span></div>
+                <div class="stat"><strong id="st-lendo">0</strong><span>Em leitura</span></div>
+                <div class="stat"><strong id="st-fim">0</strong><span>Concluídos</span></div>
+            </section>
+
+            <div class="perfil-grid">
+                <form id="form-dados" class="painel" novalidate>
+                    <h2>Dados da conta</h2>
+                    <p class="msg" id="msg-dados" role="alert" tabindex="-1"></p>
+                    <div class="campo"><label for="p-nome">Nome completo</label><input id="p-nome" name="nome" maxlength="100" autocomplete="name" required></div>
+                    <div class="campo"><label for="p-email">E-mail</label><input id="p-email" name="email" type="email" maxlength="120" autocomplete="email" required></div>
+                    <button class="btn" type="submit">Salvar alterações</button>
+                </form>
+
+                <form id="form-senha" class="painel" novalidate>
+                    <h2>Alterar senha</h2>
+                    <p class="msg" id="msg-senha" role="alert" tabindex="-1"></p>
+                    <div class="campo"><label for="s-atual">Senha atual</label><input id="s-atual" name="senhaAtual" type="password" autocomplete="current-password" required></div>
+                    <div class="campo"><label for="s-nova">Nova senha (mínimo de 8 caracteres)</label><input id="s-nova" name="novaSenha" type="password" minlength="8" autocomplete="new-password" required></div>
+                    <div class="campo"><label for="s-conf">Confirmar nova senha</label><input id="s-conf" name="confirmar" type="password" minlength="8" autocomplete="new-password" required></div>
+                    <button class="btn" type="submit">Alterar senha</button>
+                </form>
+            </div>
+
+            <section class="perfil-secao">
+                <span class="rotulo">LEITURA</span>
+                <h2>Minhas leituras</h2>
+                <ul class="leituras" id="leituras"></ul>
+            </section>
+
+            <section class="perfil-secao">
+                <span class="rotulo">FAVORITOS</span>
+                <h2>Livros que você guardou</h2>
+                <div class="livros" id="favoritos"></div>
+            </section>
+        </div>
+    </main>
+    <script src="js/api.js"></script>
+    <script src="js/layout.js"></script>
+    <script src="js/perfil.js"></script>
+</body>
+
+</html>

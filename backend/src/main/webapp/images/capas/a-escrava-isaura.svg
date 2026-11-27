@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" role="img" aria-label="Capa de A ESCRAVA ISAURA">
+<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a1a2c"/><stop offset="1" stop-color="#3b0b15"/></linearGradient>
+<clipPath id="c"><rect width="300" height="400"/></clipPath></defs>
+<rect width="300" height="400" fill="url(#g)"/>
+<g clip-path="url(#c)"><circle cx="150" cy="195" r="88" fill="#f0b45a" opacity=".9"/><circle cx="150" cy="195" r="62" fill="#f7d58b" opacity=".85"/>
+<g fill="none" stroke="#f3ead2" stroke-width="9"><rect x="22" y="95" width="62" height="34" rx="17"/><rect x="68" y="95" width="62" height="34" rx="17"/><rect x="170" y="95" width="62" height="34" rx="17"/><rect x="216" y="95" width="62" height="34" rx="17"/></g>
+<g stroke="#f3ead2" stroke-width="4" stroke-linecap="round"><path d="M146 80 l-8 -14"/><path d="M150 112 h0"/><path d="M150 76 v-16"/><path d="M154 80 l8 -14"/><path d="M142 150 l-6 10"/><path d="M158 150 l6 10"/></g>
+<rect x="0" y="195" width="300" height="20" fill="#4a0f1d"/></g>
+<rect x="14" y="14" width="272" height="372" fill="none" stroke="#f0b45a" stroke-width="1.5" opacity=".7"/>
+<text x="150" y="250" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="32" font-weight="700" fill="#fbefe0" letter-spacing="1">A ESCRAVA</text><text x="150" y="288" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="32" font-weight="700" fill="#fbefe0" letter-spacing="1">ISAURA</text>
+<line x1="110" y1="310" x2="190" y2="310" stroke="#f0b45a" stroke-width="2"/>
+<text x="150" y="336" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="14" letter-spacing="3" fill="#fbefe0" opacity=".9">BERNARDO GUIMARÃES</text>
+</svg>

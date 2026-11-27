@@ -32,6 +32,33 @@ public class LivroDAO {
         return livros;
     }
 
+    public int contar() throws SQLException {
+
+        try (Connection con = Conexao.conectar();
+                PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) FROM livro");
+                ResultSet rs = ps.executeQuery()) {
+
+            rs.next();
+            return rs.getInt(1);
+        }
+    }
+
+    // Coloca a capa em um livro já cadastrado que ainda não tem capa.
+    public boolean definirCapaSeVazia(String titulo, String capa)
+            throws SQLException {
+
+        String sql = "UPDATE livro SET capa = ? "
+                + "WHERE LOWER(titulo) = LOWER(?) AND (capa IS NULL OR capa = '')";
+
+        try (Connection con = Conexao.conectar();
+                PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, capa);
+            ps.setString(2, titulo);
+            return ps.executeUpdate() > 0;
+        }
+    }
+
     public Livro buscarPorId(int id) throws SQLException {
 
         String sql = "SELECT id, titulo, autor, genero, descricao, capa "
@@ -90,13 +117,41 @@ public class LivroDAO {
 
     public boolean excluir(int id) throws SQLException {
 
-        String sql = "DELETE FROM livro WHERE id = ?";
+        // Remove antes os registros que dependem do livro (chaves estrangeiras).
+        String[] dependentes = {
+            "DELETE FROM favorito WHERE livro_id = ?",
+            "DELETE FROM historico_leitura WHERE livro_id = ?",
+            "DELETE FROM avaliacao WHERE livro_id = ?",
+            "DELETE FROM livro_categoria WHERE livro_id = ?"
+        };
 
-        try (Connection con = Conexao.conectar();
-                PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = Conexao.conectar()) {
 
-            ps.setInt(1, id);
-            return ps.executeUpdate() > 0;
+            con.setAutoCommit(false);
+
+            try {
+                for (String sql : dependentes) {
+                    try (PreparedStatement ps = con.prepareStatement(sql)) {
+                        ps.setInt(1, id);
+                        ps.executeUpdate();
+                    }
+                }
+
+                boolean excluido;
+
+                try (PreparedStatement ps = con.prepareStatement(
+                        "DELETE FROM livro WHERE id = ?")) {
+                    ps.setInt(1, id);
+                    excluido = ps.executeUpdate() > 0;
+                }
+
+                con.commit();
+                return excluido;
+
+            } catch (SQLException e) {
+                con.rollback();
+                throw e;
+            }
         }
     }
 

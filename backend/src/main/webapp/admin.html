@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administração | Biblioteca Virtual</title>
+    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/admin.css">
 </head>
 
@@ -22,7 +23,7 @@
                 <div class="campo"><label for="titulo">Título</label><input id="titulo" name="titulo" maxlength="150" required></div>
                 <div class="campo"><label for="autor">Autor</label><input id="autor" name="autor" maxlength="100" required></div>
                 <div class="campo"><label for="genero">Categoria</label><input id="genero" name="genero" maxlength="80" required placeholder="Ex.: Romance"></div>
-                <div class="campo"><label for="capa">URL da capa (opcional)</label><input id="capa" name="capa" type="url" maxlength="255" placeholder="https://..."></div>
+                <div class="campo"><label for="capa">Capa (opcional)</label><input id="capa" name="capa" maxlength="255" placeholder="https://... ou images/capas/livro.svg"></div>
                 <div class="campo"><label for="descricao">Descrição</label><textarea id="descricao" name="descricao"></textarea></div>
                 <button class="btn" id="salvar" type="submit">Cadastrar livro</button>
                 <button class="btn btn-sec" id="cancelar" type="button" hidden>Cancelar edição</button>

@@ -26,10 +26,34 @@
             <p class="msg" id="aviso" role="alert" tabindex="-1"></p>
             <div class="livros" id="catalogo-grade"></div>
         </section>
+        <section class="secao" id="autores"><span class="rotulo">AUTORES</span>
+            <h2>Autores brasileiros que você precisa conhecer</h2>
+            <p class="intro-secao">Vozes que marcaram a literatura do país. Use as setas ou deslize para ver mais.</p>
+            <div class="carrossel" role="region" aria-roledescription="carrossel" aria-label="Autores famosos brasileiros">
+                <button type="button" class="seta" id="autor-ant" aria-label="Autores anteriores">‹</button>
+                <div class="trilho" id="autores-trilho" tabindex="0"></div>
+                <button type="button" class="seta" id="autor-prox" aria-label="Próximos autores">›</button>
+            </div>
+        </section>
+        <section class="newsletter" id="newsletter">
+            <div class="newsletter-conteudo">
+                <span class="rotulo">NEWSLETTER</span>
+                <h2>O Jornal da Biblioteca</h2>
+                <p>Assine gratuitamente e receba novidades do acervo, indicações de leitura e curiosidades sobre a literatura brasileira.</p>
+                <p class="msg" id="msg-newsletter" role="alert" tabindex="-1"></p>
+                <form id="form-newsletter" novalidate>
+                    <div class="campo"><label for="news-nome">Nome (opcional)</label><input id="news-nome" name="nome" maxlength="100" autocomplete="name"></div>
+                    <div class="campo"><label for="news-email">E-mail</label><input id="news-email" name="email" type="email" maxlength="120" autocomplete="email" required placeholder="voce@email.com"></div>
+                    <button class="btn" type="submit">Assinar jornal</button>
+                </form>
+            </div>
+        </section>
     </main>
     <script src="js/api.js"></script>
     <script src="js/layout.js"></script>
     <script src="js/livros.js"></script>
+    <script src="js/autores.js"></script>
+    <script src="js/newsletter.js"></script>
 </body>
 
 </html>
